@@ -115,7 +115,7 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 - [x] T22: Implement keydown and keyup listeners.
 - [x] T23: Implement anti-repeat guard.
 - [x] T24: Implement form input focus isolation.
-- [ ] T25: Implement audio playback.
+- [x] T25: Implement audio playback.
 - [ ] T26: Implement resource and listener cleanup.
 
 ### Phase 6 - Accessibility and Visualization
@@ -624,3 +624,41 @@ Runtime audio functionality has not yet been verified.
 
 Connect seven drum pads to real audio samples
 and verify audio lifecycle behavior.
+
+## 18. Phase 5 - Audio Integration
+
+### Version 1.0 - Drum Audio Playback
+
+Implemented:
+- Seven generated WAV sound assets.
+- Audio sample manifest.
+- Audio engine integration with DrumKit.
+- Lazy AudioContext initialization.
+- Audio sample loading and decoding.
+- Cached AudioBuffer playback.
+- Independent polyphonic drum voices.
+- Loading, ready, and error states.
+- Audio disposal on component unmount.
+
+### Verification Checklist
+
+- [x] All seven pads produce different sounds.
+- [x] Mouse click triggers playback.
+- [x] Keyboard shortcuts trigger playback.
+- [x] Two sounds can overlap.
+- [x] Key holding does not spam sound.
+- [x] Repeated hits work after keyup.
+- [x] Audio files load successfully.
+- [x] Refresh and retry behavior works.
+- [x] ESLint passes.
+- [x] Production build passes.
+
+### Known Limitation
+
+Initial audio loading may introduce first-hit latency.
+Keyboard behavior with Vietnamese IME requires
+additional verification.
+
+### Next Step
+
+Implement accessible hit history and visual decibel meter.

@@ -1,19 +1,94 @@
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DRUM_PADS } from '../data/drum-pads';
+import { DRUM_SAMPLES } from '../audio/sample-manifest';
+import { WebDrumAudioEngine } from '../audio/drum-audio-engine';
 import { useDrumKeyboard } from '../hooks/useDrumKeyboard';
 import type { DrumSoundId } from '../types/drum';
 import { DrumPad } from './DrumPad';
 import styles from './DrumKit.module.css';
 
+type AudioStatus = 'idle' | 'loading' | 'ready' | 'error';
+
 export function DrumKit() {
   const [lastSelected, setLastSelected] =
     useState<DrumSoundId | null>(null);
 
+  const [audioStatus, setAudioStatus] =
+    useState<AudioStatus>('idle');
+
+  const [audioError, setAudioError] = useState('');
+
+  const engineRef = useRef<WebDrumAudioEngine | null>(null);
+  const controllerRef = useRef<AbortController | null>(null);
+  const readyPromiseRef = useRef<Promise<void> | null>(null);
+
+  useEffect(() => {
+    const engine = new WebDrumAudioEngine();
+    const controller = new AbortController();
+
+    engineRef.current = engine;
+    controllerRef.current = controller;
+    readyPromiseRef.current = null;
+
+    return () => {
+      controller.abort();
+      readyPromiseRef.current = null;
+      engineRef.current = null;
+      controllerRef.current = null;
+      void engine.dispose();
+    };
+  }, []);
+
   const handleTrigger = useCallback((id: DrumSoundId) => {
-    // Phase 5 - Keyboard interaction only.
-    // Audio will be connected in the next commit.
+    const engine = engineRef.current;
+    const controller = controllerRef.current;
+
+    if (!engine || !controller || controller.signal.aborted) {
+      return;
+    }
+
     setLastSelected(id);
+
+    if (!readyPromiseRef.current) {
+      setAudioStatus('loading');
+      setAudioError('');
+
+      // Start while handling the user interaction.
+      readyPromiseRef.current = (async () => {
+        await engine.start();
+        await engine.loadSamples(
+          DRUM_SAMPLES,
+          controller.signal
+        );
+      })();
+    }
+
+    const play = async () => {
+      try {
+        await readyPromiseRef.current;
+
+        if (controller.signal.aborted) return;
+
+        engine.trigger(id);
+        setAudioStatus('ready');
+      } catch (error) {
+        if (controller.signal.aborted) return;
+
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'Unknown audio error';
+
+        setAudioError(message);
+        setAudioStatus('error');
+
+        // Allow a later user interaction to retry loading.
+        readyPromiseRef.current = null;
+      }
+    };
+
+    void play();
   }, []);
 
   const pressedCodes = useDrumKeyboard(handleTrigger);
@@ -33,7 +108,6 @@ export function DrumKit() {
         </p>
 
         <h2 id="studio-heading">DRUM STUDIO</h2>
-
         <p>Seven pads. One rhythm. Your own beat.</p>
       </header>
 
@@ -55,14 +129,26 @@ export function DrumKit() {
       </section>
 
       <p className={styles.status} role="status">
-        {selectedPad
-          ? `Triggered: ${selectedPad.label}. Audio is not connected yet.`
-          : 'Press W, A, S, D, J, K or L to trigger a pad.'}
+        {audioStatus === 'loading'
+          ? 'Loading drum sounds...'
+          : audioStatus === 'error'
+            ? 'Audio unavailable. Press a pad to retry.'
+            : selectedPad
+              ? `Triggered: ${selectedPad.label}`
+              : 'Press W, A, S, D, J, K or L.'}
       </p>
+
+      {audioStatus === 'error' && (
+        <p role="alert">
+          Audio error: {audioError}
+        </p>
+      )}
 
       <p className={styles.hint}>
         Use your keyboard or click a pad.
-        Multiple keys can be held at the same time.
+        {audioStatus === 'ready'
+          ? ' Audio engine ready.'
+          : ' Audio starts after your first interaction.'}
       </p>
     </section>
   );
