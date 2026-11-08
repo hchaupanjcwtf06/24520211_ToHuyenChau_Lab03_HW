@@ -1,0 +1,18 @@
+.app {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  .siteHeader,
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .pageTitle {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    overflow-wrap: anywhere;
+  }

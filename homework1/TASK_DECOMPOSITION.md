@@ -103,9 +103,9 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 
 ### Phase 4 - Drum Kit UI
 
-- [ ] T16: Implement semantic page structure.
-- [ ] T17: Implement reusable DrumPad component.
-- [ ] T18: Implement seven-pad layout.
+- [x] T16: Implement semantic page structure.
+- [x] T17: Implement reusable DrumPad component.
+- [x] T18: Implement seven-pad layout.
 - [ ] T19: Implement active pad visual feedback.
 - [ ] T20: Implement responsive styles.
 
@@ -509,3 +509,15 @@ DrumAudioEngine implementation:
 
 Completed tasks: T01-T15.
 Next task: T16 - Implement semantic page structure.
+
+### Version 0.6 - Semantic UI Skeleton
+
+- Implemented semantic App and DrumKit structure.
+- Implemented reusable DrumPad component.
+- Rendered seven pads with stable keys.
+- Added a temporary click preview.
+- Verified lint, build, and basic click behavior.
+- Audio and keyboard controls are not yet implemented.
+
+Completed: T16, T17, T18.
+Pending: T19, T20.

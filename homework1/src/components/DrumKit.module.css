@@ -1,0 +1,25 @@
+.studio {
+    width: 100%;
+  }
+  
+  .padGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .padGrid li {
+    min-width: 0;
+  }
+  
+  .status {
+    min-height: 2rem;
+  }
+  
+  @media (max-width: 600px) {
+    .padGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }

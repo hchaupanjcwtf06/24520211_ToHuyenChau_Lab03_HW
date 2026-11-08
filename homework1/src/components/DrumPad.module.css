@@ -1,0 +1,26 @@
+.pad {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font: inherit;
+    cursor: pointer;
+  }
+  
+  .key {
+    font-size: 2rem;
+    font-weight: 900;
+  }
+  
+  .name {
+    font-size: 0.8rem;
+  }
+  
+  .pad:focus-visible {
+    outline: 3px solid #2667ff;
+    outline-offset: 3px;
+  }
