@@ -82,9 +82,9 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 - [x] T01: Create initial TASK_DECOMPOSITION.md.
 - [x] T02: Inspect existing Lab 02 HW1 source.
 - [x] T03: Review applicable Lab 02 HW2 audio code.
-- [ ] T04: Define React 19 engineering rules.
-- [ ] T05: Create project-rules.md.
-- [ ] T06: Define acceptance criteria and test strategy.
+- [x] T04: Define React 19 engineering rules.
+- [x] T05: Create project-rules.md.
+- [x] T06: Define acceptance criteria and test strategy.
 
 ### Phase 2 - Project Setup
 
@@ -350,4 +350,77 @@ FIFO Queue suitability inspection: PASS.
 
 Runtime verification: NOT YET PERFORMED.
 
-Audit status: COMPLETED.
+Audit status:
+## 12. HW1 Acceptance Criteria
+
+### AC-01: Drum Pads
+- Exactly seven required pads are displayed.
+- W, A, S, D, J, K, L have valid key mappings.
+- Each pad is a native accessible button.
+- Each pad has a meaningful accessible name.
+
+### AC-02: Keyboard Interaction
+- Physical key codes trigger the correct pads.
+- Repeated keydown events do not cause hit spam.
+- Keyup correctly releases the pressed visual state.
+- Shortcuts do not trigger while typing in editable controls.
+- Native Tab navigation remains functional.
+- Enter and Space interaction does not cause duplicate hits.
+
+### AC-03: Audio
+- Each required pad produces an audible sound.
+- Independent hits can overlap.
+- Audio playback starts after a user gesture.
+- Active audio resources are released correctly.
+- Audio failures do not crash the application.
+
+### AC-04: Visual Feedback
+- The pressed pad has visible feedback.
+- Hit history is visually readable.
+- Hit history uses output with aria-live="polite".
+- A visual audio meter is displayed.
+- The meter calculation is documented.
+
+### AC-05: Accessibility
+- All buttons are keyboard accessible.
+- Focus indicators are visible.
+- Pad pressed states are exposed using aria-pressed.
+- Visual feedback does not depend on hearing.
+- WCAG 2.2 AA requirements are reviewed.
+- Lighthouse Accessibility target is 100.
+
+### AC-06: Responsive Layout
+- No horizontal overflow at 375px.
+- Drum pads remain usable at narrow widths.
+- Text and interactive controls remain readable.
+
+### AC-07: React and Resource Safety
+- React 19 and createRoot are used.
+- No deprecated React or keyboard APIs.
+- Global event listeners have cleanup.
+- Animation frames have cleanup.
+- Audio resources have cleanup.
+- StrictMode does not leave duplicate active listeners.
+
+### AC-08: Submission
+- Task decomposition reflects actual progress.
+- Project rules are included.
+- At least three verified AI failures are documented.
+- Git commits reflect actual incremental development.
+- Final screenshots are collected into one PDF.
+- README explains setup, testing, and features.
+
+## 13. Governance Progress
+
+### Version 0.3 - Governance and Acceptance Criteria
+
+- Defined React 19 engineering constraints.
+- Defined accessibility and keyboard rules.
+- Defined audio resource lifecycle rules.
+- Defined acceptance criteria AC-01 through AC-08.
+- Prepared testing and evidence requirements.
+
+Completed tasks: T01-T06.
+Next task: T07 - Initialize React 19 with Vite.
+
+
