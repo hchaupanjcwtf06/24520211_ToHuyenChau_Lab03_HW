@@ -4,15 +4,20 @@ import { DRUM_PADS } from '../data/drum-pads';
 import { DRUM_SAMPLES } from '../audio/sample-manifest';
 import { WebDrumAudioEngine } from '../audio/drum-audio-engine';
 import { useDrumKeyboard } from '../hooks/useDrumKeyboard';
-import type { DrumSoundId } from '../types/drum';
+import type { DrumHit, DrumSoundId } from '../types/drum';
 import { DrumPad } from './DrumPad';
+import { HitHistory } from './HitHistory';
 import styles from './DrumKit.module.css';
 
 type AudioStatus = 'idle' | 'loading' | 'ready' | 'error';
 
+const MAX_HISTORY = 8;
+
 export function DrumKit() {
   const [lastSelected, setLastSelected] =
     useState<DrumSoundId | null>(null);
+
+  const [hits, setHits] = useState<DrumHit[]>([]);
 
   const [audioStatus, setAudioStatus] =
     useState<AudioStatus>('idle');
@@ -48,13 +53,10 @@ export function DrumKit() {
       return;
     }
 
-    setLastSelected(id);
-
     if (!readyPromiseRef.current) {
       setAudioStatus('loading');
       setAudioError('');
 
-      // Start while handling the user interaction.
       readyPromiseRef.current = (async () => {
         await engine.start();
         await engine.loadSamples(
@@ -71,6 +73,23 @@ export function DrumKit() {
         if (controller.signal.aborted) return;
 
         engine.trigger(id);
+
+        const pad = DRUM_PADS.find((item) => item.id === id);
+
+        if (pad) {
+          const hit: DrumHit = {
+            id: crypto.randomUUID(),
+            padId: id,
+            label: pad.label,
+            occurredAtMs: Date.now(),
+          };
+
+          setHits((previous) =>
+            [hit, ...previous].slice(0, MAX_HISTORY)
+          );
+        }
+
+        setLastSelected(id);
         setAudioStatus('ready');
       } catch (error) {
         if (controller.signal.aborted) return;
@@ -82,8 +101,6 @@ export function DrumKit() {
 
         setAudioError(message);
         setAudioStatus('error');
-
-        // Allow a later user interaction to retry loading.
         readyPromiseRef.current = null;
       }
     };
@@ -128,7 +145,7 @@ export function DrumKit() {
         </ul>
       </section>
 
-      <p className={styles.status} role="status">
+      <p className={styles.status}>
         {audioStatus === 'loading'
           ? 'Loading drum sounds...'
           : audioStatus === 'error'
@@ -150,6 +167,8 @@ export function DrumKit() {
           ? ' Audio engine ready.'
           : ' Audio starts after your first interaction.'}
       </p>
+
+      <HitHistory hits={hits} />
     </section>
   );
 }

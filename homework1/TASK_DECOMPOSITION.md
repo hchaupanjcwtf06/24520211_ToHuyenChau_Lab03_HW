@@ -122,8 +122,8 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 
 - [ ] T27: Implement accessible button names.
 - [ ] T28: Implement aria-pressed state.
-- [ ] T29: Implement visual hit history.
-- [ ] T30: Implement output with aria-live="polite".
+- [x] T29: Implement visual hit history.
+- [x] T30: Implement output with aria-live="polite".
 - [ ] T31: Implement visual decibel meter.
 - [ ] T32: Verify keyboard focus and interaction.
 
@@ -662,3 +662,28 @@ additional verification.
 ### Next Step
 
 Implement accessible hit history and visual decibel meter.
+
+## 19. Accessible Hit History
+
+### Version 1.1 - Hit History
+
+Implemented:
+- Reusable HitHistory component.
+- Immutable history state.
+- Unique hit IDs using crypto.randomUUID().
+- Most recent 8 hits displayed.
+- Latest hit announcement using output and aria-live.
+- Visible hit names and timestamps.
+- No successful hit recorded before audio triggering.
+
+Verification:
+- [x] Keyboard hits update history.
+- [x] Mouse clicks update history.
+- [x] Newest hit appears first.
+- [x] History stays within 8 entries.
+- [x] Anti-repeat does not add duplicate hits.
+- [x] Live announcements verified with screen reader.
+- [x] ESLint passes.
+- [x] Production build passes.
+
+Next: Visual Decibel Meter and lifecycle verification.

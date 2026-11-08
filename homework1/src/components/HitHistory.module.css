@@ -1,0 +1,69 @@
+
+.history {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #454545;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+  
+  .count {
+    color: #c5ff42;
+    font-size: 0.8rem;
+  }
+  
+  .announcement {
+    display: block;
+    margin-top: 0.75rem;
+    color: #c5ff42;
+    font-weight: 700;
+  }
+  
+  .empty {
+    color: #b7b7b7;
+  }
+  
+  .list {
+    display: grid;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    background: #242424;
+    border-left: 3px solid #c5ff42;
+  }
+  
+  .hitName {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-weight: 700;
+  }
+  
+  .time {
+    flex-shrink: 0;
+    color: #b7b7b7;
+    font-size: 0.8rem;
+  }
+  
