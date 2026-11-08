@@ -8,6 +8,7 @@ import type { DrumHit, DrumSoundId } from '../types/drum';
 import { DrumPad } from './DrumPad';
 import { HitHistory } from './HitHistory';
 import styles from './DrumKit.module.css';
+import { DecibelMeter } from './DecibelMeter';
 
 type AudioStatus = 'idle' | 'loading' | 'ready' | 'error';
 
@@ -23,6 +24,7 @@ export function DrumKit() {
     useState<AudioStatus>('idle');
 
   const [audioError, setAudioError] = useState('');
+  const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
 
   const engineRef = useRef<WebDrumAudioEngine | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
@@ -73,6 +75,7 @@ export function DrumKit() {
         if (controller.signal.aborted) return;
 
         engine.trigger(id);
+        setAnalyser(engine.getAnalyser());
 
         const pad = DRUM_PADS.find((item) => item.id === id);
 
@@ -93,6 +96,7 @@ export function DrumKit() {
         setAudioStatus('ready');
       } catch (error) {
         if (controller.signal.aborted) return;
+        setAnalyser(null);
 
         const message =
           error instanceof Error
@@ -167,7 +171,7 @@ export function DrumKit() {
           ? ' Audio engine ready.'
           : ' Audio starts after your first interaction.'}
       </p>
-
+      <DecibelMeter analyser={analyser} />
       <HitHistory hits={hits} />
     </section>
   );
