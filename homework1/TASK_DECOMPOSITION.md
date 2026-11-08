@@ -95,11 +95,11 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 
 ### Phase 3 - Contracts and Architecture
 
-- [ ] T11: Define DrumPad TypeScript interface.
-- [ ] T12: Define stable pad IDs and physical key mapping.
-- [ ] T13: Define audio engine contract.
-- [ ] T14: Define hit history and visual state contracts.
-- [ ] T15: Define component responsibilities.
+- [x] T11: Define DrumPad TypeScript interface.
+- [x] T12: Define stable pad IDs and physical key mapping.
+- [x] T13: Define audio engine contract.
+- [x] T14: Define hit history and visual state contracts.
+- [x] T15: Define component responsibilities.
 
 ### Phase 4 - Drum Kit UI
 
@@ -438,3 +438,74 @@ Completed tasks: T01-T10.
 Next phase: TypeScript Contracts and Architecture.
 
 Verification status: PASS.
+
+
+## 15. Phase 3 - Contracts and Architecture
+
+### Version 0.5 - Domain Contracts
+
+Created contracts:
+
+- src/types/drum.ts
+- src/data/drum-pads.ts
+- src/audio/audio-contract.ts
+
+### Component Responsibilities
+
+App.tsx:
+- Render the main semantic page structure.
+- Compose the Drum Kit application.
+
+DrumKit.tsx:
+- Coordinate keyboard input and visual state.
+- Connect user interaction with the audio engine.
+- Maintain hit history.
+
+DrumPad.tsx:
+- Render one accessible button.
+- Expose aria-pressed state.
+- Display active visual feedback.
+
+HitHistory.tsx:
+- Display recent triggered hits.
+- Provide accessible live announcements.
+
+DecibelMeter.tsx:
+- Display the audio signal level.
+- Use AnalyserNode data.
+- Calculate a documented dBFS measurement.
+- Stop animation updates during cleanup.
+
+useDrumKeyboard.ts:
+- Map physical key codes to drum pads.
+- Handle keydown and keyup.
+- Prevent OS auto-repeat.
+- Ignore editable controls.
+- Clean up keyboard listeners.
+
+DrumAudioEngine implementation:
+- Initialize and resume AudioContext.
+- Load and decode audio samples.
+- Support overlapping drum hits.
+- Track active source nodes.
+- Release audio resources.
+
+### Architecture Decisions
+
+- Domain data is separated from UI components.
+- Physical keyboard mapping uses KeyboardEvent.code.
+- Every pad has a stable ID.
+- Audio processing is separated from React rendering.
+- Hit history uses immutable React state.
+- Animation frames will not cause React re-render loops.
+- The audio meter will use a defined dBFS reference.
+
+### Verification
+
+- TypeScript contracts compile successfully.
+- ESLint passes.
+- Production build passes.
+- No audio or UI behavior is claimed as implemented yet.
+
+Completed tasks: T01-T15.
+Next task: T16 - Implement semantic page structure.
