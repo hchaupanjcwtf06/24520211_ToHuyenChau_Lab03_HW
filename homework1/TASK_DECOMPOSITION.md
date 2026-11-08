@@ -721,3 +721,21 @@ Implemented:
 - Screenshot evidence PDF.
 
 Next: Final verification and submission preparation.
+
+## 23. AI Failure Correction and Retesting
+
+### Verified Correction
+
+AF-HW1-01 - React Ref Access During Render
+
+- Root cause identified.
+- Ref access moved out of JSX render.
+- ESLint passed after correction.
+- Production build passed.
+- Drum audio playback retested.
+- Decibel meter retested.
+
+### Remaining Audit Work
+
+- Verify additional genuine AI failure cases.
+- Preserve error messages and correction evidence.
