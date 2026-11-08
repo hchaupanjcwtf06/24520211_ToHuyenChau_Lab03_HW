@@ -106,15 +106,15 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 - [x] T16: Implement semantic page structure.
 - [x] T17: Implement reusable DrumPad component.
 - [x] T18: Implement seven-pad layout.
-- [ ] T19: Implement active pad visual feedback.
+- [x] T19: Implement active pad visual feedback.
 - [x] T20: Implement responsive styles.
 
 ### Phase 5 - Keyboard and Audio Engine
 
-- [ ] T21: Implement e.code keyboard mapping.
-- [ ] T22: Implement keydown and keyup listeners.
-- [ ] T23: Implement anti-repeat guard.
-- [ ] T24: Implement form input focus isolation.
+- [x] T21: Implement e.code keyboard mapping.
+- [x] T22: Implement keydown and keyup listeners.
+- [x] T23: Implement anti-repeat guard.
+- [x] T24: Implement form input focus isolation.
 - [ ] T25: Implement audio playback.
 - [ ] T26: Implement resource and listener cleanup.
 
@@ -534,3 +534,45 @@ Pending: T19, T20.
 
 Completed: T16, T17, T18, T20.
 Pending: T19, keyboard and audio integration.
+
+
+## 16. Phase 5 - Keyboard Interaction
+
+### Version 0.8 - Keyboard Event Engine
+
+Implemented:
+- Physical keyboard mapping with event.code.
+- keydown and keyup handlers.
+- Anti-repeat using event.repeat and heldCodes.
+- Editable input focus isolation.
+- Window blur pressed-state reset.
+- Keyboard listener cleanup.
+- Active visual state through React.
+- Native button interaction preserved.
+
+### Verification Checklist
+
+- [x] All seven keyboard mappings work.
+- [x] Repeated keydown does not cause repeated triggers.
+- [x] Multiple held keys update their own pad states.
+- [x] Editable input focus prevents drum shortcuts.
+- [x] Tab focus remains visible.
+- [x] Enter and Space activate focused buttons once.
+- [x] Window blur resets held pad states.
+- [x] ESLint passes.
+- [x] Production build passes.
+
+### Known Limitation
+
+Keyboard testing showed inconsistent behavior with
+Vietnamese input method settings.
+
+Physical key events were observed under English input mode.
+Full Vietnamese IME compatibility is not yet verified.
+
+### Next Step
+
+Implement a polyphonic Web Audio Engine.
+
+Audio playback, decibel meter, and hit history are
+not yet implemented.

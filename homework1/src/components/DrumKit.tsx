@@ -1,6 +1,7 @@
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { DRUM_PADS } from '../data/drum-pads';
+import { useDrumKeyboard } from '../hooks/useDrumKeyboard';
 import type { DrumSoundId } from '../types/drum';
 import { DrumPad } from './DrumPad';
 import styles from './DrumKit.module.css';
@@ -9,14 +10,17 @@ export function DrumKit() {
   const [lastSelected, setLastSelected] =
     useState<DrumSoundId | null>(null);
 
-  function handleTrigger(id: DrumSoundId) {
-    // Temporary UI-only interaction.
-    // Audio playback will be implemented in Phase 5.
+  const handleTrigger = useCallback((id: DrumSoundId) => {
+    // Phase 5 - Keyboard interaction only.
+    // Audio will be connected in the next commit.
     setLastSelected(id);
-  }
+  }, []);
 
-  const selectedPad =
-    DRUM_PADS.find((pad) => pad.id === lastSelected);
+  const pressedCodes = useDrumKeyboard(handleTrigger);
+
+  const selectedPad = DRUM_PADS.find(
+    (pad) => pad.id === lastSelected
+  );
 
   return (
     <section
@@ -24,11 +28,13 @@ export function DrumKit() {
       aria-labelledby="studio-heading"
     >
       <header className={styles.heading}>
-        <p className={styles.eyebrow}>INTERACTIVE DRUM MACHINE</p>
-        <h2 id="studio-heading">DRUM STUDIO</h2>
-        <p>
-          Seven pads. One rhythm. Your own beat.
+        <p className={styles.eyebrow}>
+          INTERACTIVE DRUM MACHINE
         </p>
+
+        <h2 id="studio-heading">DRUM STUDIO</h2>
+
+        <p>Seven pads. One rhythm. Your own beat.</p>
       </header>
 
       <section
@@ -40,7 +46,7 @@ export function DrumKit() {
             <li key={pad.id}>
               <DrumPad
                 pad={pad}
-                isPressed={false}
+                isPressed={pressedCodes.has(pad.code)}
                 onTrigger={handleTrigger}
               />
             </li>
@@ -50,13 +56,13 @@ export function DrumKit() {
 
       <p className={styles.status} role="status">
         {selectedPad
-          ? `Preview: ${selectedPad.label} selected. Audio is not connected yet.`
-          : 'Select a drum pad to preview its control.'}
+          ? `Triggered: ${selectedPad.label}. Audio is not connected yet.`
+          : 'Press W, A, S, D, J, K or L to trigger a pad.'}
       </p>
 
       <p className={styles.hint}>
-        Keyboard shortcuts and sound playback
-        will be enabled in the next phase.
+        Use your keyboard or click a pad.
+        Multiple keys can be held at the same time.
       </p>
     </section>
   );
