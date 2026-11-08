@@ -1,25 +1,67 @@
+
 .studio {
-    width: 100%;
+  width: 100%;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid #454545;
+  background: #171717;
+}
+
+.heading {
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  color: #c5ff42;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.heading h2 {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.heading p:last-child {
+  color: #b7b7b7;
+}
+
+.padGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.padGrid li {
+  min-width: 0;
+}
+
+.status {
+  min-height: 2.5rem;
+  margin: 1.5rem 0 0;
+  color: #c5ff42;
+  font-weight: 700;
+}
+
+.hint {
+  color: #b7b7b7;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .studio {
+    padding: 1rem;
   }
-  
+
   .padGrid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
-    padding: 0;
-    list-style: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
   }
-  
-  .padGrid li {
-    min-width: 0;
-  }
-  
-  .status {
-    min-height: 2rem;
-  }
-  
-  @media (max-width: 600px) {
-    .padGrid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
+}
