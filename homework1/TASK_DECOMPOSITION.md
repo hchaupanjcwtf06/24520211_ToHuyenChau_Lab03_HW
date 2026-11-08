@@ -137,7 +137,7 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 - [x] T38: Run Lighthouse Accessibility audit.
 - [x] T39: Inspect browser console and React DevTools.
 - [ ] T40: Document at least three verified AI failure cases.
-- [ ] T41: Fix and retest identified problems.
+- [x] T41: Fix and retest identified problems.
 
 ### Phase 8 - Documentation and Submission
 
