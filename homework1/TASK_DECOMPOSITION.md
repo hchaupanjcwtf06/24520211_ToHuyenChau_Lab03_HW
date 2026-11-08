@@ -79,9 +79,9 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 
 ### Phase 1 - Planning and Governance
 
-- [ ] T01: Create initial TASK_DECOMPOSITION.md.
-- [ ] T02: Inspect existing Lab 02 HW1 source.
-- [ ] T03: Review applicable Lab 02 HW2 audio code.
+- [x] T01: Create initial TASK_DECOMPOSITION.md.
+- [x] T02: Inspect existing Lab 02 HW1 source.
+- [x] T03: Review applicable Lab 02 HW2 audio code.
 - [ ] T04: Define React 19 engineering rules.
 - [ ] T05: Create project-rules.md.
 - [ ] T06: Define acceptance criteria and test strategy.
@@ -214,3 +214,140 @@ The PDF evidence package is an additional submission requirement.
 
 Current status: Planning in progress.
 Implementation has not started.
+
+### Version 0.2 - Lab 02 Code Audit
+
+- Completed DataGrid source audit.
+- Completed Audio Engine source audit.
+- Completed Visualizer and FIFO Queue audit.
+- Identified polyphony limitation in the old AudioEngine.
+- Decided to implement independent drum hit playback.
+- Recorded initial architecture decisions.
+
+Completed tasks: T01, T02, T03.
+Next tasks: T04, T05, T06.
+
+## 11. Lab 02 Source Code Audit
+
+### 11.1. Audit Scope
+
+Reviewed source files:
+
+- Lab02/homework1/src/components/DataGrid.tsx
+- Lab02/homework1/src/types/grid.ts
+- Lab02/homework2/src/audio-engine.ts
+- Lab02/homework2/src/Visualizer.tsx
+- Lab02/homework2/src/audio-task-queue.ts
+
+Audit method: Source inspection.
+
+Runtime behavior has not yet been independently verified.
+
+### 11.2. DataGrid Audit Results
+
+Reusable engineering patterns:
+
+- useState for independent component state.
+- useRef for persistent references.
+- useId for accessible control identification.
+- onKeyDown for keyboard handling.
+- preventDefault for appropriate keyboard interactions.
+- aria-label for accessible names.
+- aria-live="polite" for status announcements.
+- Immutable array updates.
+- TypeScript interfaces for component contracts.
+
+Important differences:
+
+- DataGrid uses event.key for navigation.
+- Drum Kit requires event.code for physical key mapping.
+- DataGrid manages complex cell focus.
+- Drum Kit should primarily use native button navigation.
+- DataGrid does not implement global keyboard listener cleanup.
+
+Decision:
+
+Reuse engineering principles, not DataGrid-specific logic.
+
+### 11.3. Audio Engine Audit Results
+
+Reusable architecture:
+
+- Lazy AudioContext initialization.
+- AudioContext.resume() after interaction.
+- AudioBufferSourceNode playback.
+- GainNode volume control.
+- AnalyserNode integration.
+- AbortController-based cancellation.
+- Explicit audio resource disposal.
+
+Identified architectural limitation:
+
+The original AudioEngine stores only one activeSource reference.
+
+This does not provide complete tracking of multiple
+simultaneously active audio sources.
+
+HW1 decision:
+
+Implement a polyphonic audio engine with a collection
+of active AudioBufferSourceNode instances.
+
+### 11.4. Visualizer Audit Results
+
+Reusable patterns:
+
+- useRef for Canvas DOM access.
+- requestAnimationFrame for visual updates.
+- cancelAnimationFrame during cleanup.
+- Direct Canvas drawing to avoid frequent React renders.
+- AnalyserNode frequency data access.
+
+Important distinction:
+
+Frequency data normalized to 0-255 is not directly
+a decibel measurement.
+
+HW1 must define an explicit meter calculation and
+reference level before implementation.
+
+### 11.5. Audio Task Queue Audit Results
+
+The existing AudioTaskQueue uses serialized FIFO execution.
+
+Decision:
+
+Do not serialize live drum hits through this queue.
+
+Reason:
+
+Drum Kit requires simultaneous audio playback and
+low-latency response to independent key presses.
+
+The existing queue may remain a learning reference
+for cancellation and resource management.
+
+### 11.6. HW1 Architectural Decisions
+
+- AD-01: Use React 19 functional components.
+- AD-02: Use TypeScript contracts before implementation.
+- AD-03: Use physical KeyboardEvent.code mapping.
+- AD-04: Use native accessible button elements.
+- AD-05: Implement polyphonic playback.
+- AD-06: Track all active audio sources.
+- AD-07: Integrate AnalyserNode with the audio output graph.
+- AD-08: Use requestAnimationFrame for visual updates.
+- AD-09: Clean up keyboard listeners and audio resources.
+- AD-10: Keep Lab 02 source files unchanged.
+
+### 11.7. Audit Verification
+
+DataGrid source inspection: PASS.
+TypeScript contracts inspection: PASS.
+Audio Engine architecture inspection: PASS.
+Visualizer lifecycle inspection: PASS.
+FIFO Queue suitability inspection: PASS.
+
+Runtime verification: NOT YET PERFORMED.
+
+Audit status: COMPLETED.
