@@ -116,7 +116,7 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 - [x] T23: Implement anti-repeat guard.
 - [x] T24: Implement form input focus isolation.
 - [x] T25: Implement audio playback.
-- [ ] T26: Implement resource and listener cleanup.
+- [x] T26: Implement resource and listener cleanup.
 
 ### Phase 6 - Accessibility and Visualization
 
@@ -125,17 +125,17 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 - [x] T29: Implement visual hit history.
 - [x] T30: Implement output with aria-live="polite".
 - [x] T31: Implement visual decibel meter.
-- [ ] T32: Verify keyboard focus and interaction.
+- [x] T32: Verify keyboard focus and interaction.
 
 ### Phase 7 - Testing and Verification
 
-- [ ] T33: Test all seven drum pads.
-- [ ] T34: Test keydown, keyup, and key holding.
-- [ ] T35: Test input focus isolation.
-- [ ] T36: Test listener and audio cleanup.
-- [ ] T37: Test 375px responsive layout.
-- [ ] T38: Run Lighthouse Accessibility audit.
-- [ ] T39: Inspect browser console and React DevTools.
+- [x] T33: Test all seven drum pads.
+- [x] T34: Test keydown, keyup, and key holding.
+- [x] T35: Test input focus isolation.
+- [x] T36: Test listener and audio cleanup.
+- [x] T37: Test 375px responsive layout.
+- [x] T38: Run Lighthouse Accessibility audit.
+- [x] T39: Inspect browser console and React DevTools.
 - [ ] T40: Document at least three verified AI failure cases.
 - [ ] T41: Fix and retest identified problems.
 
