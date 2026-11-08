@@ -8,14 +8,15 @@ export function DrumPad({
   onTrigger,
 }: DrumPadProps) {
   return (
-    <button
-      type="button"
-      className={styles.pad}
-      aria-label={`${pad.label}, keyboard ${pad.keyLabel}`}
-      aria-pressed={isPressed}
-      data-pressed={isPressed}
-      onClick={() => onTrigger(pad.id)}
-    >
+  <button
+    type="button"
+    data-drum-pad
+    className={styles.pad}
+    aria-label={`${pad.label}, keyboard ${pad.keyLabel}`}
+    aria-pressed={isPressed}
+    data-pressed={isPressed}
+    onClick={() => onTrigger(pad.id)}
+  >
       <kbd className={styles.key}>{pad.keyLabel}</kbd>
       <span className={styles.name}>{pad.label}</span>
     </button>

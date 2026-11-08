@@ -120,11 +120,11 @@ Do not directly copy unrelated DataGrid logic into Drum Kit.
 
 ### Phase 6 - Accessibility and Visualization
 
-- [ ] T27: Implement accessible button names.
-- [ ] T28: Implement aria-pressed state.
+- [x] T27: Implement accessible button names.
+- [x] T28: Implement aria-pressed state.
 - [x] T29: Implement visual hit history.
 - [x] T30: Implement output with aria-live="polite".
-- [ ] T31: Implement visual decibel meter.
+- [x] T31: Implement visual decibel meter.
 - [ ] T32: Verify keyboard focus and interaction.
 
 ### Phase 7 - Testing and Verification
@@ -687,3 +687,37 @@ Verification:
 - [x] Production build passes.
 
 Next: Visual Decibel Meter and lifecycle verification.
+
+## 21. Lifecycle and Accessibility Verification
+
+### Version 1.3 - Keyboard and Audio Lifecycle
+
+Implemented:
+- Improved interactive-control focus isolation.
+- Added explicit Drum Pad identification.
+- Added visibilitychange pressed-state reset.
+- Preserved native button activation.
+- Maintained keyboard listener cleanup.
+- Reviewed audio disposal behavior.
+
+### Verification
+- [x] Seven keyboard mappings pass.
+- [x] Anti-repeat passes.
+- [x] Multiple held keys pass.
+- [x] Input isolation passes.
+- [x] Enter/Space button activation passes.
+- [x] Window blur reset passes.
+- [x] Audio playback after reload passes.
+- [x] No uncaught runtime errors.
+- [x] ESLint passes.
+- [x] Production build passes.
+
+### Outstanding Checks
+- Full component unmount/resource lifecycle audit.
+- Screen reader verification.
+- Lighthouse Accessibility audit.
+- Final responsive and interaction audit.
+- AI failure audit completion.
+- Screenshot evidence PDF.
+
+Next: Final verification and submission preparation.

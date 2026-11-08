@@ -3,14 +3,26 @@ import { useEffect, useState } from 'react';
 import { DRUM_PAD_MAP } from '../data/drum-pads';
 import type { DrumKeyCode, DrumSoundId } from '../types/drum';
 
-function isEditableTarget(target: EventTarget | null): boolean {
+function shouldIgnoreKeyboard(target: EventTarget | null): boolean {
   if (!(target instanceof Element)) return false;
 
-  return (
-    target.closest('input, textarea, select') !== null ||
-    (target instanceof HTMLElement && target.isContentEditable) ||
-    target.closest('[contenteditable="true"], [contenteditable=""]') !== null
+  // Never hijack typing or editing.
+  if (
+    target.closest(
+      'input, textarea, select, [contenteditable], [role="textbox"]'
+    )
+  ) {
+    return true;
+  }
+
+  // Preserve other interactive controls.
+  // Our own drum pads may still use drum shortcuts.
+  const control = target.closest(
+    'button, a[href], [role="button"], [role="link"]'
   );
+
+  return control !== null &&
+    !control.hasAttribute('data-drum-pad');
 }
 
 export function useDrumKeyboard(
@@ -22,13 +34,22 @@ export function useDrumKeyboard(
   useEffect(() => {
     const heldCodes = new Set<DrumKeyCode>();
 
-    function handleKeyDown(event: KeyboardEvent) {
-      if (isEditableTarget(event.target)) return;
+    function resetPressed() {
+      if (heldCodes.size === 0) return;
 
-      const pad = DRUM_PAD_MAP.get(event.code as DrumKeyCode);
+      heldCodes.clear();
+      setPressedCodes(new Set());
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.isComposing) return;
+      if (shouldIgnoreKeyboard(event.target)) return;
+
+      const pad = DRUM_PAD_MAP.get(
+        event.code as DrumKeyCode
+      );
 
       if (!pad) return;
-
       if (event.repeat || heldCodes.has(pad.code)) return;
 
       event.preventDefault();
@@ -39,7 +60,9 @@ export function useDrumKeyboard(
     }
 
     function handleKeyUp(event: KeyboardEvent) {
-      const pad = DRUM_PAD_MAP.get(event.code as DrumKeyCode);
+      const pad = DRUM_PAD_MAP.get(
+        event.code as DrumKeyCode
+      );
 
       if (!pad || !heldCodes.has(pad.code)) return;
 
@@ -47,19 +70,28 @@ export function useDrumKeyboard(
       setPressedCodes(new Set(heldCodes));
     }
 
-    function handleWindowBlur() {
-      heldCodes.clear();
-      setPressedCodes(new Set());
+    function handleVisibilityChange() {
+      if (document.hidden) resetPressed();
     }
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
-    window.addEventListener('blur', handleWindowBlur);
+    window.addEventListener('blur', resetPressed);
+
+    document.addEventListener(
+      'visibilitychange',
+      handleVisibilityChange
+    );
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
-      window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('blur', resetPressed);
+
+      document.removeEventListener(
+        'visibilitychange',
+        handleVisibilityChange
+      );
     };
   }, [onTrigger]);
 
