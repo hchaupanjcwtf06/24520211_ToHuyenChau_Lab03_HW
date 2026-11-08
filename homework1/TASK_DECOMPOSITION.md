@@ -576,3 +576,51 @@ Implement a polyphonic Web Audio Engine.
 
 Audio playback, decibel meter, and hit history are
 not yet implemented.
+
+
+## 17. Phase 5 - Polyphonic Audio Engine
+
+### Version 0.9 - Audio Engine Implementation
+
+Implemented:
+- WebDrumAudioEngine class.
+- AudioContext initialization and resume.
+- Shared GainNode and AnalyserNode.
+- Audio sample loading and decoding.
+- AudioBuffer caching.
+- Independent AudioBufferSourceNode playback.
+- Active voice tracking using Set.
+- Source cleanup through onended.
+- Explicit engine disposal.
+- AbortSignal checks during sample loading.
+
+### Architecture Notes
+
+The Lab 02 AudioEngine tracked only one active source.
+
+The Lab 03 implementation uses a Set of active
+AudioBufferSourceNode instances to support polyphony.
+
+The FIFO AudioTaskQueue is not used for live drum hits.
+
+### Verification
+
+- [x] TypeScript compilation passes.
+- [x] ESLint passes.
+- [x] Production build passes.
+- [ ] Audio playback tested in browser.
+- [ ] Multiple overlapping voices tested.
+- [ ] Audio cleanup verified on unmount.
+
+### Current Limitations
+
+The audio engine is not yet connected to DrumKit.
+
+Sample assets have not been integrated.
+
+Runtime audio functionality has not yet been verified.
+
+### Next Step
+
+Connect seven drum pads to real audio samples
+and verify audio lifecycle behavior.
