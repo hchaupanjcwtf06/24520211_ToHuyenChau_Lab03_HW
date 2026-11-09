@@ -129,8 +129,7 @@ Next: TypeScript contracts and MIDI note generation.
 - React Profiler verification pending.
 
 ### Commit 20 - Polyphonic Audio Engine
-
-Status: In progress.
+Status: Completed.
 
 Scope:
 - T17: Create and resume AudioContext.
@@ -146,14 +145,55 @@ Implementation constraints:
 - Do not exceed eight active voices.
 
 Verification:
-- [ ] AudioContext initializes successfully.
-- [ ] AudioContext resumes after user interaction.
-- [ ] Oscillator produces audible sound.
-- [ ] Maximum eight voices enforced.
-- [ ] Ninth note steals the oldest active voice.
-- [ ] ESLint passes.
-- [ ] Production build passes.
+- [x] AudioContext initializes successfully.
+- [x] AudioContext resumes after user interaction.
+- [x] Oscillator produces audible sound.
+- [x] Maximum eight voices enforced.
+- [x] Ninth note steals the oldest active voice.
+- [x] ESLint passes.
+- [x] Production build passes.
 
 Next:
-- T21: Click-free note release envelope.
+- Commit 21: Click-free release envelope and resource cleanup.
+
+### Commit 21 - Click-Free Release Envelope & Resource Cleanup
+Status: Completed.
+
+Scope:
+- T21: Click-free note release envelope using exponentialRampToValueAtTime.
 - T22: Engine disposal and voice cleanup.
+
+Implementation constraints:
+- Avoid audio clicks/pops with smooth gain ramp.
+- Disconnect nodes after release completes to prevent memory leaks.
+- Safely close AudioContext on engine dispose.
+
+Verification:
+- [x] Attack ramp (10ms) and release ramp (50ms) implemented.
+- [x] Audio nodes disconnected after release phase.
+- [x] Automated test scripts passed (check-adsr-cleanup.mjs).
+- [x] ESLint passes.
+- [x] Production build passes.
+
+Next:
+- Commit 22: Connect polyphonic synth to 88-key piano keyboard.
+
+### Commit 22 - Connect Polyphonic Synth to Piano Keyboard
+Status: Completed.
+
+Scope:
+- Integrated PolyphonicSynth into PianoKeyboard component using useRef.
+- Implemented deterministic lifecycle disposal in useEffect cleanup.
+- Connected pointer/touch events to trigger noteOn and noteOff with O(1) frequency lookup.
+- Added accessible status header with live voice count and last played note (<output role="status" aria-live="polite">).
+- Corrected CSS Module bindings and absolute positioning for accidental black keys.
+
+Verification:
+- [x] Audio produces clean sound on key interaction.
+- [x] Polyphony limit of 8 voices verified on live UI.
+- [x] FIFO voice stealing verified when 9th key is triggered.
+- [x] ESLint passes with zero warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 23: Verify render isolation with React Profiler.
