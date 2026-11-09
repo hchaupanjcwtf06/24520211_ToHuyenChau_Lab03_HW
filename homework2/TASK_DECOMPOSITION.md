@@ -113,7 +113,7 @@ Verification:
 
 Next: TypeScript contracts and MIDI note generation.
 
-Commit 18 - Contracts and Piano Data:
+### Commit 18 - Contracts and Piano Data:
 - PianoNote, PianoKeyProps, RecordedNote contracts.
 - PolyphonicSynthContract interface.
 - Algorithmic generation of 88 keys.
@@ -121,9 +121,39 @@ Commit 18 - Contracts and Piano Data:
 - MIDI frequency calculations verified.
 - Automated piano data tests passed.
 
-Commit 19 - Piano Interface:
+### Commit 19 - Piano Interface:
 - Memoized PianoKey component implemented.
 - 88-key interface created.
 - Pointer and keyboard interactions implemented.
 - Component location corrected to src/components/.
 - React Profiler verification pending.
+
+### Commit 20 - Polyphonic Audio Engine
+
+Status: In progress.
+
+Scope:
+- T17: Create and resume AudioContext.
+- T18: Implement oscillator and gain voice creation.
+- T19: Enforce eight-voice concurrency limit.
+- T20: Implement FIFO voice stealing using Map.
+
+Implementation constraints:
+- Follow PolyphonicSynthContract.
+- Use Web Audio API.
+- Maintain MIDI-based voice tracking.
+- Reuse the AudioContext.
+- Do not exceed eight active voices.
+
+Verification:
+- [ ] AudioContext initializes successfully.
+- [ ] AudioContext resumes after user interaction.
+- [ ] Oscillator produces audible sound.
+- [ ] Maximum eight voices enforced.
+- [ ] Ninth note steals the oldest active voice.
+- [ ] ESLint passes.
+- [ ] Production build passes.
+
+Next:
+- T21: Click-free note release envelope.
+- T22: Engine disposal and voice cleanup.
