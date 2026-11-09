@@ -44,12 +44,12 @@ Requirements:
 - [ ] T16: Verify render isolation using React Profiler.
 
 ### Phase 4 - Polyphonic Audio Engine
-- [ ] T17: Create and resume AudioContext.
-- [ ] T18: Implement oscillator and gain voice creation.
-- [ ] T19: Implement eight-voice concurrency limit.
-- [ ] T20: Implement FIFO voice stealing using Map.
-- [ ] T21: Implement click-free note release envelope.
-- [ ] T22: Implement engine disposal and voice cleanup.
+- [x] T17: Create and resume AudioContext.
+- [x] T18: Implement oscillator and gain voice creation.
+- [x] T19: Implement eight-voice concurrency limit.
+- [x] T20: Implement FIFO voice stealing using Map.
+- [x] T21: Implement click-free note release envelope.
+- [x] T22: Implement engine disposal and voice cleanup.
 
 ### Phase 5 - Recording and Replay
 - [ ] T23: Implement note event recording.
