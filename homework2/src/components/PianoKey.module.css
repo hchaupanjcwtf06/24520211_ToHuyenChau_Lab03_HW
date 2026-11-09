@@ -1,0 +1,61 @@
+
+.key {
+    position: relative;
+    flex: none;
+    padding: 0;
+    border-radius: 0 0 5px 5px;
+    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+    font: inherit;
+    transition: background-color 80ms ease;
+  }
+  
+  .key:focus-visible {
+    outline: 3px solid #ff4d91;
+    outline-offset: -4px;
+    z-index: 5;
+  }
+  
+  .white {
+    width: var(--white-key-width);
+    height: 190px;
+    background: #f6f5ef;
+    border: 1px solid #979797;
+    color: #252525;
+  }
+  
+  .white[data-pressed="true"] {
+    background: #b3e8ff;
+  }
+  
+  .black {
+    position: absolute;
+    top: 0;
+    width: var(--black-key-width);
+    height: 115px;
+    background: #1c1c27;
+    border: 1px solid #08080d;
+    color: #ffffff;
+    z-index: 2;
+  }
+  
+  .black[data-pressed="true"] {
+    background: #9b4dff;
+  }
+  
+  .label {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: 700;
+    pointer-events: none;
+  }
+  
+  .black .label {
+    bottom: 10px;
+    font-size: 8px;
+  }
+  

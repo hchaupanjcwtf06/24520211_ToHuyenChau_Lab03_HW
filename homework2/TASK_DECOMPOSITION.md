@@ -28,19 +28,19 @@ Requirements:
 - [x] T04: Define implementation and verification plan.
 
 ### Phase 2 - Contracts and Piano Data
-- [ ] T05: Define PianoNote and PianoKey props contracts.
-- [ ] T06: Define PolyphonicSynth interface.
-- [ ] T07: Define recording and replay event contracts.
-- [ ] T08: Generate 88 MIDI notes algorithmically.
-- [ ] T09: Verify A0-C8 and 52/36 key counts.
-- [ ] T10: Implement MIDI-to-frequency calculation.
+- [x] T05: Define PianoNote and PianoKey props contracts.
+- [x] T06: Define PolyphonicSynth interface.
+- [x] T07: Define recording and replay event contracts.
+- [x] T08: Generate 88 MIDI notes algorithmically.
+- [x] T09: Verify A0-C8 and 52/36 key counts.
+- [x] T10: Implement MIDI-to-frequency calculation.
 
 ### Phase 3 - UI and Render Isolation
-- [ ] T11: Implement accessible PianoKey component.
-- [ ] T12: Implement 88-key piano layout.
-- [ ] T13: Add mouse and pointer interactions.
-- [ ] T14: Implement pressed-state management.
-- [ ] T15: Apply React.memo to PianoKey.
+- [x] T11: Implement accessible PianoKey component.
+- [x] T12: Implement 88-key piano layout.
+- [x] T13: Add mouse and pointer interactions.
+- [x] T14: Implement pressed-state management.
+- [x] T15: Apply React.memo to PianoKey.
 - [ ] T16: Verify render isolation using React Profiler.
 
 ### Phase 4 - Polyphonic Audio Engine
@@ -106,9 +106,24 @@ Requirements:
 Status: In progress.
 
 Verification:
-- [ ] Vite scaffold generated.
-- [ ] Dependencies installed.
-- [ ] ESLint passed.
-- [ ] Production build passed.
+- [x] Vite scaffold generated.
+- [x] Dependencies installed.
+- [x] ESLint passed.
+- [x] Production build passed.
 
 Next: TypeScript contracts and MIDI note generation.
+
+Commit 18 - Contracts and Piano Data:
+- PianoNote, PianoKeyProps, RecordedNote contracts.
+- PolyphonicSynthContract interface.
+- Algorithmic generation of 88 keys.
+- 52 white and 36 black notes verified.
+- MIDI frequency calculations verified.
+- Automated piano data tests passed.
+
+Commit 19 - Piano Interface:
+- Memoized PianoKey component implemented.
+- 88-key interface created.
+- Pointer and keyboard interactions implemented.
+- Component location corrected to src/components/.
+- React Profiler verification pending.
