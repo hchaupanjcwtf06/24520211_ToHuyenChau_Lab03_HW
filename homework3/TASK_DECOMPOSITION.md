@@ -7,10 +7,10 @@
 - [x] T03: Set up deterministic mock data for PVS teams and supply drops.
 
 ### Phase 2 - Anti-Drift Timer Engine
-- [ ] T04: Implement usePubgAirdropTimer hook with absolute targetEpochMs.
-- [ ] T05: Bind document.visibilitychange event to instantly resync on tab focus.
-- [ ] T06: Handle 4 timer lifecycle states: WARMUP, AIRDROP_LIVE, LOOTED_OUT, EXPIRED.
-- [ ] T07: Create CLI test suite verifying anti-drift accuracy and tab refocus resync.
+- [x] T04: Implement usePubgAirdropTimer hook with absolute targetEpochMs.
+- [x] T05: Bind document.visibilitychange event to instantly resync on tab focus.
+- [x] T06: Handle 4 timer lifecycle states: WARMUP, AIRDROP_LIVE, LOOTED_OUT, EXPIRED.
+- [x] T07: Create CLI test suite verifying anti-drift accuracy and tab refocus resync.
 
 ### Phase 3 - Optimistic Claim Engine & 409 Conflict Rollback
 - [ ] T08: Implement useOptimisticClaim hook with immediate local quantity decrement.
@@ -58,3 +58,21 @@ Scope:
 
 Next:
 - Commit 31: Implement Anti-Drift Airdrop Countdown Engine with visibilitychange resync (T04, T05, T06, T07).
+
+### Commit 31 - Implement Anti-Drift Airdrop Countdown Engine
+Status: Completed.
+
+Scope:
+- Built usePubgAirdropTimer utilizing absolute target epoch timestamps to eliminate setInterval drift.
+- Integrated document.visibilitychange listener to resync countdown state immediately on tab focus.
+- Modeled 4 explicit lifecycle phases: WARMUP, AIRDROP_LIVE, LOOTED_OUT, EXPIRED.
+- Created check-airdrop-timer.mjs CLI test verifying mathematical accuracy across simulated time shifts.
+
+Verification:
+- [x] CLI script passes all 4 phase transition checks.
+- [x] ESLint passes without warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 32: Implement Optimistic Claim Hook with 409 Conflict Rollback (T08-T13).
+
