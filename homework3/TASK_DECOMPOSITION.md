@@ -32,9 +32,9 @@
 - [x] T20: Assemble root App.tsx layout connecting Timer, ClaimStation, and Leaderboard.
 
 ### Phase 6 - Accessibility & Responsive Design
-- [ ] T21: Verify WCAG 2.2 AA semantics, ARIA live regions, and tab order.
-- [ ] T22: Verify zero-overflow responsive layout at 375px mobile viewport.
-- [ ] T23: Audit with Google Lighthouse (Target: 100/100 Accessibility).
+- [x] T21: Verify WCAG 2.2 AA semantics, ARIA live regions, and tab order.
+- [x] T22: Verify zero-overflow responsive layout at 375px mobile viewport.
+- [x] T23: Audit with Google Lighthouse (Target: 100/100 Accessibility).
 
 ### Phase 7 - Quality Gate & AI Audit
 - [ ] T24: Audit AI failures and document 3 forensic cases in AI_FAILURE_AUDIT.md.
@@ -126,3 +126,21 @@ Verification:
 
 Next:
 - Commit 35: Accessibility verification, 375px responsive audit, and Lighthouse check (T21-T23).
+
+### Commit 35 - Verify Accessibility, Responsive 375px & Lighthouse Audit
+Status: Completed.
+
+Scope:
+- Updated HTML metadata, description, and lang attribute for compliance.
+- Verified WCAG 2.2 AA keyboard navigation, focus indicators, and ARIA live announcements.
+- Tested responsive mobile layout on 375px viewport with zero horizontal page overflow.
+- Audited accessibility via Google Lighthouse and achieved 100/100 A11y score.
+
+Verification:
+- [x] Lighthouse Accessibility: 100 / 100.
+- [x] 375px responsive check passed.
+- [x] ESLint passes with zero warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 36: Document HW3 AI failure forensic cases and final quality gate sign-off (T24-T26).
