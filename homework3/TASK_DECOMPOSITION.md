@@ -2,9 +2,9 @@
 ## Task Decomposition & Work Breakdown Structure (WBS)
 
 ### Phase 1 - Architecture & Contract Specification
-- [ ] T01: Define TypeScript contracts for AirdropTimer, ClaimItem, and Leaderboard.
-- [ ] T02: Configure ESLint, TypeScript strict rules, and responsive root layout.
-- [ ] T03: Set up deterministic mock data for PVS teams and supply drops.
+- [x] T01: Define TypeScript contracts for AirdropTimer, ClaimItem, and Leaderboard.
+- [x] T02: Configure ESLint, TypeScript strict rules, and responsive root layout.
+- [x] T03: Set up deterministic mock data for PVS teams and supply drops.
 
 ### Phase 2 - Anti-Drift Timer Engine
 - [ ] T04: Implement usePubgAirdropTimer hook with absolute targetEpochMs.
@@ -47,3 +47,14 @@
 
 ### Commit 29 - HW3 Setup, TypeScript Contracts & Initial Mock Data
 Status: Pending.
+
+### Commit 30 - Define PUBG Domain Contracts & Deterministic Mock Data
+Status: Completed.
+
+Scope:
+- Defined immutable TypeScript interfaces for AirdropTimerState, SupplyItem, and PvsTeamStats.
+- Created deterministic mock datasets for PVS teams (CES, TE, GE, AGG) and airdrop loot crates.
+- Verified zero type mismatches in TypeScript build.
+
+Next:
+- Commit 31: Implement Anti-Drift Airdrop Countdown Engine with visibilitychange resync (T04, T05, T06, T07).
