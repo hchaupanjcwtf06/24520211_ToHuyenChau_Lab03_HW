@@ -1,61 +1,122 @@
-
+/* Khung cơ bản cho toàn bộ phím */
 .key {
-    position: relative;
-    flex: none;
-    padding: 0;
-    border-radius: 0 0 5px 5px;
-    cursor: pointer;
-    touch-action: none;
-    user-select: none;
-    font: inherit;
-    transition: background-color 80ms ease;
-  }
-  
-  .key:focus-visible {
-    outline: 3px solid #ff4d91;
-    outline-offset: -4px;
-    z-index: 5;
-  }
-  
-  .white {
-    width: var(--white-key-width);
-    height: 190px;
-    background: #f6f5ef;
-    border: 1px solid #979797;
-    color: #252525;
-  }
-  
-  .white[data-pressed="true"] {
-    background: #b3e8ff;
-  }
-  
-  .black {
-    position: absolute;
-    top: 0;
-    width: var(--black-key-width);
-    height: 115px;
-    background: #1c1c27;
-    border: 1px solid #08080d;
-    color: #ffffff;
-    z-index: 2;
-  }
-  
-  .black[data-pressed="true"] {
-    background: #9b4dff;
-  }
-  
-  .label {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    font-weight: 700;
-    pointer-events: none;
-  }
-  
-  .black .label {
-    bottom: 10px;
-    font-size: 8px;
-  }
-  
+  appearance: none;
+  border: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0 8px 0;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  transition: transform 0.05s ease, background 0.05s ease, box-shadow 0.05s ease;
+  position: relative;
+  outline: none;
+}
+
+/* Chuẩn tiếp cận WCAG 2.2 AA khi focus bằng phím Tab */
+.key:focus-visible {
+  outline: 2px solid #ccff45;
+  outline-offset: -2px;
+  z-index: 10 !important;
+}
+
+/* ================================
+   PHÍM TRẮNG (NATURAL KEYS)
+   ================================ */
+.whiteKey {
+  width: var(--white-key-width, 36px);
+  height: 190px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7f7f7 85%, #eaeaea 100%);
+  border: 1px solid #bfbfbf;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  /* Hiệu ứng gờ nổi cạnh phím và đổ bóng đáy */
+  box-shadow: 
+    inset 0 -3px 0 #d1d5db,
+    inset -1px 0 0 rgba(0, 0, 0, 0.08),
+    inset 1px 0 0 rgba(255, 255, 255, 0.8),
+    0 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.whiteKey:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
+}
+
+/* Trạng thái khi nhấn phím trắng */
+.whiteKey[data-pressed="true"],
+.whiteKey:active {
+  background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 -1px 0 #94a3b8;
+  transform: translateY(2px);
+}
+
+/* ================================
+   PHÍM ĐEN (ACCIDENTAL KEYS)
+   ================================ */
+.blackKey {
+  width: var(--black-key-width, 24px);
+  height: 120px;
+  background: linear-gradient(180deg, #2e2e2e 0%, #1a1a1a 70%, #0d0d0d 100%);
+  border: 1px solid #000000;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  /* Đổ bóng sâu tạo cảm giác phím đen nổi lên trên phím trắng */
+  box-shadow: 
+    inset 0 -3px 0 #1e1e1e,
+    inset 1px 0 1px rgba(255, 255, 255, 0.15),
+    inset -1px 0 1px rgba(0, 0, 0, 0.6),
+    0 6px 10px rgba(0, 0, 0, 0.65);
+  z-index: 3;
+}
+
+.blackKey:hover {
+  background: linear-gradient(180deg, #3d3d3d 0%, #242424 100%);
+}
+
+/* Trạng thái khi nhấn phím đen */
+.blackKey[data-pressed="true"],
+.blackKey:active {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  box-shadow: 
+    inset 0 2px 3px rgba(0, 0, 0, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+  transform: translateY(2px);
+}
+
+/* ================================
+   NHÃN TÊN NỐT (NOTE LABELS)
+   ================================ */
+.keyLabel {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.whiteKey .keyLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #71717a;
+  letter-spacing: -0.02em;
+}
+
+.whiteKey[data-pressed="true"] .keyLabel {
+  color: #09090b;
+}
+
+.blackKey .keyLabel {
+  font-size: 0.55rem;
+  font-weight: 600;
+  color: #a1a1aa;
+  margin-bottom: 2px;
+}
+
+.blackKey[data-pressed="true"] .keyLabel {
+  color: #ccff45; /* Đổi màu xanh neon đặc trưng khi nốt đen được nhấn */
+}

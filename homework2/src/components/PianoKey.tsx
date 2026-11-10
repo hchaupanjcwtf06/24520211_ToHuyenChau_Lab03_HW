@@ -1,7 +1,13 @@
-
 import { memo } from 'react';
-import type { PianoKeyProps } from '../types/piano';
+import type { PianoNote } from '../types/piano';
 import styles from './PianoKey.module.css';
+
+interface PianoKeyProps {
+  readonly note: PianoNote;
+  readonly isPressed: boolean;
+  readonly onNoteOn: (midi: number) => void;
+  readonly onNoteOff: (midi: number) => void;
+}
 
 export const PianoKey = memo(function PianoKey({
   note,
@@ -9,36 +15,39 @@ export const PianoKey = memo(function PianoKey({
   onNoteOn,
   onNoteOff,
 }: PianoKeyProps) {
+  const isBlack = note.isBlack;
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.repeat) return; // Chặn spam keydown của hệ điều hành
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onNoteOn(note.midi);
+    }
+  };
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onNoteOff(note.midi);
+    }
+  };
+
   return (
     <button
       type="button"
-      className={`${styles.key} ${
-        note.isBlack ? styles.black : styles.white
-      }`}
-      aria-label={`${note.noteName}, ${note.frequencyHz.toFixed(2)} hertz`}
+      className={`${styles.key} ${isBlack ? styles.blackKey : styles.whiteKey}`}
+      aria-label={`${note.noteName} (MIDI ${note.midi})`}
       aria-pressed={isPressed}
-      data-pressed={isPressed}
-      onPointerDown={(event) => {
-        if (event.button !== 0) return;
-        event.currentTarget.setPointerCapture(event.pointerId);
-        onNoteOn(note.midi);
-      }}
+      data-pressed={isPressed ? 'true' : 'false'}
+      onPointerDown={() => onNoteOn(note.midi)}
       onPointerUp={() => onNoteOff(note.midi)}
-      onPointerCancel={() => onNoteOff(note.midi)}
-      onLostPointerCapture={() => onNoteOff(note.midi)}
-      onKeyDown={(event) => {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-        event.preventDefault();
-        if (!event.repeat) onNoteOn(note.midi);
+      onPointerLeave={() => {
+        if (isPressed) onNoteOff(note.midi);
       }}
-      onKeyUp={(event) => {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-        event.preventDefault();
-        onNoteOff(note.midi);
-      }}
-      onBlur={() => onNoteOff(note.midi)}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
     >
-      <span className={styles.label}>{note.noteName}</span>
+      <span className={styles.keyLabel}>{note.noteName}</span>
     </button>
   );
 });

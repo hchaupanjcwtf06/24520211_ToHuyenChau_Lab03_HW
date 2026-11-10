@@ -60,9 +60,9 @@ Requirements:
 - [x] T28: Abort replay on component unmount.
 
 ### Phase 6 - Accessibility and Verification
-- [ ] T29: Verify accessible names and button semantics.
-- [ ] T30: Verify focus and keyboard interaction.
-- [ ] T31: Verify responsive layout at 375px.
+- [x] T29: Verify accessible names and button semantics.
+- [x] T30: Verify focus and keyboard interaction.
+- [x] T31: Verify responsive layout at 375px.
 - [ ] T32: Verify eight simultaneous voices.
 - [ ] T33: Verify ninth-note FIFO voice stealing.
 - [x] T34: Verify recording timing and replay order.
@@ -266,3 +266,22 @@ Verification:
 
 Next:
 - Commit 27: Keyboard navigation and WCAG 2.2 AA accessibility verification (T29, T30, T31).
+
+### Commit 27 - Keyboard Navigation & WCAG 2.2 AA Accessibility
+Status: Completed.
+
+Scope:
+- T29: Verified explicit accessible button labels, aria-pressed, and polite status announcements.
+- T30: Implemented Enter and Space key interactions with OS key-repeat guards on PianoKey.
+- T31: Verified responsive 375px viewport layout without horizontal root overflow.
+- Enhanced PianoKey styling with realistic 3D key heights, gradients, and tactile press feedback.
+
+Verification:
+- [x] Keyboard navigation tested (Tab, Enter, Space without repeat flood).
+- [x] WCAG 2.2 AA accessibility roles and labels verified in browser DOM.
+- [x] Responsive layout tested on 375px mobile viewport.
+- [x] ESLint passes with zero warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 28: Lighthouse Accessibility audit, AI failure forensic documentation, and final review (T36-T45).
