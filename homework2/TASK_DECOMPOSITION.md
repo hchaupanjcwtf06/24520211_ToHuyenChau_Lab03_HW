@@ -52,8 +52,8 @@ Requirements:
 - [x] T22: Implement engine disposal and voice cleanup.
 
 ### Phase 5 - Recording and Replay
-- [ ] T23: Implement note event recording.
-- [ ] T24: Capture durationMs and deltaMs.
+- [x] T23: Implement note event recording.
+- [x] T24: Capture durationMs and deltaMs.
 - [ ] T25: Implement FIFO sequence playback.
 - [ ] T26: Implement 0.5x, 1x and 2x replay.
 - [ ] T27: Implement Stop Sequence cancellation.
@@ -213,3 +213,19 @@ Verification:
 
 Next:
 - Commit 24: Implement FIFO note event recording (T23, T24).
+
+### Commit 24 - Note Event Recording & FIFO Timing Capture
+Status: Completed.
+
+Scope:
+- T23: Implemented usePianoRecorder hook managing recording states (isRecording, recordedNotes).
+- T24: Captured deltaMs and durationMs using performance.now() without drifting.
+- Verified FIFO note capture according to RecordedNote contract.
+
+Verification:
+- [x] Automated timing and sequence tests passed (check-recorder-timing.mjs).
+- [x] ESLint passes with zero warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 25: Variable-speed replay engine with AbortController (T25-T28).
