@@ -54,10 +54,10 @@ Requirements:
 ### Phase 5 - Recording and Replay
 - [x] T23: Implement note event recording.
 - [x] T24: Capture durationMs and deltaMs.
-- [ ] T25: Implement FIFO sequence playback.
-- [ ] T26: Implement 0.5x, 1x and 2x replay.
-- [ ] T27: Implement Stop Sequence cancellation.
-- [ ] T28: Abort replay on component unmount.
+- [x] T25: Implement FIFO sequence playback.
+- [x] T26: Implement 0.5x, 1x and 2x replay.
+- [x] T27: Implement Stop Sequence cancellation.
+- [x] T28: Abort replay on component unmount.
 
 ### Phase 6 - Accessibility and Verification
 - [ ] T29: Verify accessible names and button semantics.
@@ -229,3 +229,22 @@ Verification:
 
 Next:
 - Commit 25: Variable-speed replay engine with AbortController (T25-T28).
+
+### Commit 25 - Variable-Speed Replay Engine with AbortController
+Status: Completed.
+
+Scope:
+- T25: Implemented sequential FIFO melody playback in usePianoPlayback hook.
+- T26: Added speed multipliers (0.5x, 1x, 2x) scaling deltaMs and durationMs.
+- T27: Implemented instant cancellation mechanism using W3C AbortController and AbortSignal.
+- T28: Bound deterministic abort cleanup in useEffect return on unmount.
+
+Verification:
+- [x] Automated FIFO playback test passed (check-playback-abort.mjs).
+- [x] AbortController instant cancellation verified without promise leakage.
+- [x] Variable speeds (0.5x, 1x, 2x) verified.
+- [x] ESLint passes with zero warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 26: Sequencer UI controls and end-to-end integration.
