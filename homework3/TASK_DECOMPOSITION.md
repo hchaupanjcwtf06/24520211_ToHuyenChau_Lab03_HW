@@ -13,12 +13,12 @@
 - [x] T07: Create CLI test suite verifying anti-drift accuracy and tab refocus resync.
 
 ### Phase 3 - Optimistic Claim Engine & 409 Conflict Rollback
-- [ ] T08: Implement useOptimisticClaim hook with immediate local quantity decrement.
-- [ ] T09: Format currency with Intl.NumberFormat('vi-VN') for VND and G-Coin.
-- [ ] T10: Add idempotency lock to prevent double-click race conditions.
-- [ ] T11: Implement 409 Conflict server error simulation and automatic state rollback.
-- [ ] T12: Render accessible live alert (<section role="alert">) on 409 failure.
-- [ ] T13: Create CLI verification script for optimistic update and rollback logic.
+- [x] T08: Implement useOptimisticClaim hook with immediate local quantity decrement.
+- [x] T09: Format currency with Intl.NumberFormat('vi-VN') for VND and G-Coin.
+- [x] T10: Add idempotency lock to prevent double-click race conditions.
+- [x] T11: Implement 409 Conflict server error simulation and automatic state rollback.
+- [x] T12: Render accessible live alert (<section role="alert">) on 409 failure.
+- [x] T13: Create CLI verification script for optimistic update and rollback logic.
 
 ### Phase 4 - PVS Leaderboard & Derived Filter State
 - [ ] T14: Implement LeaderboardTable component with semantic W3C table markup.
@@ -76,3 +76,20 @@ Verification:
 Next:
 - Commit 32: Implement Optimistic Claim Hook with 409 Conflict Rollback (T08-T13).
 
+### Commit 32 - Implement Optimistic Claim Engine with 409 Conflict Rollback
+Status: Completed.
+
+Scope:
+- Built useOptimisticClaim hook with instant UI stock decrement and state snapshotting.
+- Implemented Intl.NumberFormat('vi-VN') formatters for currency (VND) and PUBG G-Coin.
+- Added idempotency locking to reject rapid duplicate clicks during pending network requests.
+- Handled 409 Conflict server simulation with automatic state rollback to prevent ghost inventory.
+- Verified end-to-end rollback mechanics via check-optimistic-claim.mjs CLI test.
+
+Verification:
+- [x] CLI script passes immediate decrement, idempotency guard, and 409 rollback tests.
+- [x] ESLint passes without errors or warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 33: Build PVS Leaderboard Table with Pure Derived Filter & Sorting (T14-T17).
