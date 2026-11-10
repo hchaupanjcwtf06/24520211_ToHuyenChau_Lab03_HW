@@ -19,44 +19,47 @@
 .title {
   margin: 0;
   font-size: 1.1rem;
-  color: #f3f4f6;
+  color: #ffffff;
   font-weight: 700;
-  letter-spacing: -0.01em;
 }
 
 .badge {
   font-size: 0.75rem;
-  font-weight: 700;
-  padding: 0.25rem 0.6rem;
+  font-weight: 800;
+  padding: 0.3rem 0.65rem;
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .badgeWarmup {
-  background: #3b82f6;
+  background: #1d4ed8;
   color: #ffffff;
 }
 
 .badgeLive {
   background: #10b981;
-  color: #ffffff;
+  color: #022c22;
   animation: pulseLive 1.5s infinite;
 }
 
 .badgeLooted {
-  background: #6b7280;
-  color: #f3f4f6;
+  background: #4b5563;
+  color: #f9fafb;
 }
 
 .badgeExpired {
-  background: #ef4444;
+  background: #b91c1c;
   color: #ffffff;
 }
 
 @keyframes pulseLive {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.75; }
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 .displayArea {
@@ -72,25 +75,25 @@
 
 .timeOutput {
   font-family: 'Courier New', Courier, monospace;
-  font-size: 2.8rem;
+  font-size: clamp(2.2rem, 8vw, 3rem);
   font-weight: 800;
-  color: #f59e0b;
+  color: #fbbf24;
   letter-spacing: 0.08em;
-  text-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
 }
 
 .unitLabel {
   font-size: 0.8rem;
-  color: #9ca3af;
+  color: #cbd5e1;
   margin-top: 0.25rem;
 }
 
 .staleNotice {
   margin: 0.75rem 0 0 0;
   font-size: 0.8rem;
-  color: #fbbf24;
-  background: rgba(245, 158, 11, 0.1);
-  padding: 0.4rem 0.6rem;
+  color: #fef08a;
+  background: rgba(245, 158, 11, 0.15);
+  padding: 0.45rem 0.65rem;
   border-radius: 4px;
-  border: 1px dashed rgba(245, 158, 11, 0.3);
+  border: 1px dashed rgba(245, 158, 11, 0.4);
 }

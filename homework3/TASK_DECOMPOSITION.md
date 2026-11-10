@@ -37,9 +37,9 @@
 - [x] T23: Audit with Google Lighthouse (Target: 100/100 Accessibility).
 
 ### Phase 7 - Quality Gate & AI Audit
-- [ ] T24: Audit AI failures and document 3 forensic cases in AI_FAILURE_AUDIT.md.
-- [ ] T25: Run lint and production build with zero warnings.
-- [ ] T26: Final Git log inspection and submission verification.
+- [x] T24: Audit AI failures and document 3 forensic cases in AI_FAILURE_AUDIT.md.
+- [x] T25: Run lint and production build with zero warnings.
+- [x] T26: Final Git log inspection and submission verification.
 
 ---
 
@@ -144,3 +144,12 @@ Verification:
 
 Next:
 - Commit 36: Document HW3 AI failure forensic cases and final quality gate sign-off (T24-T26).
+
+### Commit 36 - Complete HW3 AI Failure Audit & Final Quality Gate Sign-off
+Status: Completed.
+
+Scope:
+- Recorded 3 forensic AI failures (React 19 hook impurity, unused type compiler errors, WCAG contrast / 375px mobile overflow) into AI_FAILURE_AUDIT.md.
+- Verified 100/100 Lighthouse Accessibility score and clean zero-overflow layout at 375px.
+- Verified automated CLI test suites (timer drift, optimistic rollback, derived state).
+- Confirmed zero-warning ESLint and TypeScript production build.
