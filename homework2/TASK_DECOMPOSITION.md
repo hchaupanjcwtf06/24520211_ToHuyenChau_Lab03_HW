@@ -65,8 +65,8 @@ Requirements:
 - [ ] T31: Verify responsive layout at 375px.
 - [ ] T32: Verify eight simultaneous voices.
 - [ ] T33: Verify ninth-note FIFO voice stealing.
-- [ ] T34: Verify recording timing and replay order.
-- [ ] T35: Verify cancellation and resource cleanup.
+- [x] T34: Verify recording timing and replay order.
+- [x] T35: Verify cancellation and resource cleanup.
 - [ ] T36: Verify React Profiler render isolation.
 - [ ] T37: Run Lighthouse Accessibility audit.
 - [ ] T38: Run ESLint and production build.
@@ -248,3 +248,21 @@ Verification:
 
 Next:
 - Commit 26: Sequencer UI controls and end-to-end integration.
+
+### Commit 26 - Sequencer UI Controls & End-to-End Integration
+Status: Completed.
+
+Scope:
+- Built accessible Sequencer component with semantic W3C markup (<fieldset>, <legend>, <button type="button">, <output>).
+- Integrated usePianoRecorder and usePianoPlayback into PianoKeyboard component.
+- Connected live keyboard triggers to recorder buffer and automated replay loop.
+- Verified variable speeds (0.5x, 1x, 2x) and instantaneous AbortController cancellation on live UI.
+
+Verification:
+- [x] End-to-end manual test of recording, playback order, and key highlighting passed.
+- [x] AbortController halts replay immediately on Stop Replay.
+- [x] ESLint passes with zero warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 27: Keyboard navigation and WCAG 2.2 AA accessibility verification (T29, T30, T31).
