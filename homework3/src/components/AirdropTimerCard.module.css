@@ -1,0 +1,96 @@
+.timerCard {
+  background: linear-gradient(135deg, #181d28 0%, #0d1117 100%);
+  border: 1px solid #30363d;
+  border-left: 4px solid #f59e0b;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #f3f4f6;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badgeWarmup {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.badgeLive {
+  background: #10b981;
+  color: #ffffff;
+  animation: pulseLive 1.5s infinite;
+}
+
+.badgeLooted {
+  background: #6b7280;
+  color: #f3f4f6;
+}
+
+.badgeExpired {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+@keyframes pulseLive {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+
+.displayArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  background: #090d16;
+  border: 1px solid #1f2937;
+  border-radius: 6px;
+}
+
+.timeOutput {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #f59e0b;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+.unitLabel {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+}
+
+.staleNotice {
+  margin: 0.75rem 0 0 0;
+  font-size: 0.8rem;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.1);
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  border: 1px dashed rgba(245, 158, 11, 0.3);
+}

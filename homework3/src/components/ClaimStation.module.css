@@ -1,0 +1,184 @@
+.claimSection {
+  background: #11141a;
+  border: 1px solid #232936;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.header {
+  border-bottom: 1px solid #232936;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #f3f4f6;
+  font-weight: 700;
+}
+
+.tagline {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.alertError {
+  background: #7f1d1d;
+  color: #fee2e2;
+  border: 1px solid #b91c1c;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alertContent {
+  font-size: 0.9rem;
+}
+
+.dismissButton {
+  background: rgba(0, 0, 0, 0.3);
+  color: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.alertSuccess {
+  display: block;
+  background: #064e3b;
+  color: #d1fae5;
+  border: 1px solid #059669;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.itemList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.itemCard {
+  background: #181d28;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.itemCard:hover {
+  border-color: #f59e0b;
+}
+
+.itemMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.itemType {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.itemName {
+  margin: 0;
+  font-size: 1rem;
+  color: #f3f4f6;
+  font-weight: 600;
+}
+
+.priceRow {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.priceVnd {
+  color: #34d399;
+  font-weight: 700;
+}
+
+.priceGCoin {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.priceFree {
+  color: #60a5fa;
+  font-weight: 700;
+}
+
+.stockActionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #232936;
+  padding-top: 0.75rem;
+}
+
+.stockInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.stockLabel {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.stockValue {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e5e7eb;
+}
+
+.stockZero {
+  color: #ef4444;
+}
+
+.claimButton {
+  background: #f59e0b;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.claimButton:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.claimButton:disabled {
+  background: #374151;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

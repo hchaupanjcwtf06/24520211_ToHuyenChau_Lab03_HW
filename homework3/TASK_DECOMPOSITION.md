@@ -27,9 +27,9 @@
 - [x] T17: Verify render isolation with React.memo for leaderboard row items.
 
 ### Phase 5 - UI Assembly & Component Integration
-- [ ] T18: Build AirdropTimerCard component with military HUD styling.
-- [ ] T19: Build ClaimStation component integrating optimistic transactions.
-- [ ] T20: Assemble root App.tsx layout connecting Timer, ClaimStation, and Leaderboard.
+- [x] T18: Build AirdropTimerCard component with military HUD styling.
+- [x] T19: Build ClaimStation component integrating optimistic transactions.
+- [x] T20: Assemble root App.tsx layout connecting Timer, ClaimStation, and Leaderboard.
 
 ### Phase 6 - Accessibility & Responsive Design
 - [ ] T21: Verify WCAG 2.2 AA semantics, ARIA live regions, and tab order.
@@ -110,3 +110,19 @@ Verification:
 
 Next:
 - Commit 34: Assemble UI with AirdropTimerCard, ClaimStation, and Main App (T18-T20).
+
+### Commit 34 - Assemble UI with AirdropTimerCard, ClaimStation, and Main App
+Status: Completed.
+
+Scope:
+- Built AirdropTimerCard featuring military HUD design, pulse indicators, and aria-live status announcements.
+- Built ClaimStation with accessible item grids, disabled state handling during cooldown/warmup, and role="alert" banner for 409 Conflict.
+- Wired usePubgAirdropTimer, useOptimisticClaim, and LeaderboardTable into main App.tsx.
+- Applied responsive root container with zero horizontal overflow down to 375px.
+
+Verification:
+- [x] ESLint passes with zero warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 35: Accessibility verification, 375px responsive audit, and Lighthouse check (T21-T23).

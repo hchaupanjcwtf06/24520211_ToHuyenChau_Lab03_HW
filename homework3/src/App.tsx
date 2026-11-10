@@ -1,122 +1,63 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useMemo } from 'react';
+import { usePubgAirdropTimer } from './hooks/usePubgAirdropTimer';
+import { useOptimisticClaim } from './hooks/useOptimisticClaim';
+import { AirdropTimerCard } from './components/AirdropTimerCard';
+import { ClaimStation } from './components/ClaimStation';
+import { LeaderboardTable } from './components/LeaderboardTable';
+import { INITIAL_SUPPLY_ITEMS, INITIAL_PVS_LEADERBOARD } from './data/mockPubgData';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+// Khởi tạo mốc thời gian ở module scope (chạy 1 lần khi trang được nạp, đảm bảo purity cho React 19)
+const INITIAL_NOW = Date.now();
+const TIMER_TARGETS = {
+  warmupTargetEpochMs: INITIAL_NOW + 20_000, // 20 giây chuẩn bị
+  expireTargetEpochMs: INITIAL_NOW + 180_000, // 3 phút hoạt động
+} as const;
+
+export default function App() {
+  const claimEngine = useOptimisticClaim({
+    initialItems: INITIAL_SUPPLY_ITEMS,
+  });
+
+  const isAllLooted = useMemo(() => {
+    return claimEngine.items.every(item => item.availableStock <= 0);
+  }, [claimEngine.items]);
+
+  const airdropTimer = usePubgAirdropTimer({
+    warmupTargetEpochMs: TIMER_TARGETS.warmupTargetEpochMs,
+    expireTargetEpochMs: TIMER_TARGETS.expireTargetEpochMs,
+    isLootedOut: isAllLooted,
+  });
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="pubg-app-container">
+      <header className="pubg-header">
+        <div className="brand-badge">KRAFTON × PUBG VIETNAM</div>
+        <h1 className="main-title">PVS 2026 Grand Finals & Airdrop Arena</h1>
+        <p className="subtitle">
+          Theo dõi trực tiếp bảng xếp hạng và cướp thùng thính quân trang trong thời gian thực
+        </p>
+      </header>
 
-      <div className="ticks"></div>
+      <main className="pubg-main-content">
+        <AirdropTimerCard timer={airdropTimer} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <ClaimStation
+          items={claimEngine.items}
+          claimingId={claimEngine.claimingId}
+          transactionStatus={claimEngine.transactionStatus}
+          errorMessage={claimEngine.errorMessage}
+          isAirdropActive={airdropTimer.phase === 'AIRDROP_LIVE'}
+          onClaim={claimEngine.claimItem}
+          onClearError={claimEngine.clearError}
+        />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <LeaderboardTable teams={INITIAL_PVS_LEADERBOARD} />
+      </main>
+
+      <footer className="pubg-footer">
+        <p>Lab 03 - Web Development Course &bull; KRAFTON & PUBG Esports Vietnam</p>
+      </footer>
+    </div>
+  );
 }
-
-export default App
