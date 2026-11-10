@@ -1,0 +1,206 @@
+.leaderboardSection {
+  background: #11141a;
+  border: 1px solid #232936;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #232936;
+  padding-bottom: 0.75rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #f3f4f6;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.metaBadge {
+  background: #e11d48;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.toolbar {
+  border: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.label {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.searchInput,
+.select {
+  background: #1a1f2c;
+  color: #f3f4f6;
+  border: 1px solid #374151;
+  border-radius: 4px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.searchInput:focus,
+.select:focus {
+  border-color: #f59e0b;
+}
+
+.directionButton {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.directionButton:hover {
+  background: #1d4ed8;
+}
+
+.tableResponsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.table thead {
+  background: #181d28;
+  border-bottom: 2px solid #374151;
+}
+
+.thRank,
+.thTeam,
+.thNum {
+  padding: 0.75rem;
+  font-weight: 700;
+  color: #d1d5db;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.thNum {
+  text-align: right;
+}
+
+.row {
+  border-bottom: 1px solid #1f2937;
+  transition: background 0.15s ease;
+}
+
+.row:hover {
+  background: #1a2233;
+}
+
+.highlightedRow {
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.rankCell,
+.teamCell,
+.numCell {
+  padding: 0.75rem;
+}
+
+.numCell {
+  text-align: right;
+  color: #d1d5db;
+}
+
+.totalPointsCell {
+  color: #f59e0b;
+  font-size: 1rem;
+}
+
+.badge {
+  display: inline-block;
+  min-width: 2rem;
+  text-align: center;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: #374151;
+  color: #e5e7eb;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.topRankBadge {
+  background: #f59e0b;
+  color: #000000;
+}
+
+.teamInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.teamTag {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.teamName {
+  color: #f9fafb;
+  font-weight: 600;
+}
+
+.emptyCell {
+  padding: 2rem;
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

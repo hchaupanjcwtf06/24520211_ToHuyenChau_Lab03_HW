@@ -21,10 +21,10 @@
 - [x] T13: Create CLI verification script for optimistic update and rollback logic.
 
 ### Phase 4 - PVS Leaderboard & Derived Filter State
-- [ ] T14: Implement LeaderboardTable component with semantic W3C table markup.
-- [ ] T15: Implement pure derived sorting (WWCD, Placement Points, Kill Points) without useEffect sync.
-- [ ] T16: Add kill-feed search filter using normalized string queries.
-- [ ] T17: Verify render isolation with React.memo for leaderboard row items.
+- [x] T14: Implement LeaderboardTable component with semantic W3C table markup.
+- [x] T15: Implement pure derived sorting (WWCD, Placement Points, Kill Points) without useEffect sync.
+- [x] T16: Add kill-feed search filter using normalized string queries.
+- [x] T17: Verify render isolation with React.memo for leaderboard row items.
 
 ### Phase 5 - UI Assembly & Component Integration
 - [ ] T18: Build AirdropTimerCard component with military HUD styling.
@@ -93,3 +93,20 @@ Verification:
 
 Next:
 - Commit 33: Build PVS Leaderboard Table with Pure Derived Filter & Sorting (T14-T17).
+
+### Commit 33 - Build PVS Leaderboard Table with Pure Derived Filter & Sorting
+Status: Completed.
+
+Scope:
+- Built semantic W3C table component with proper table, caption, thead, th scope=col elements.
+- Implemented pure derived state with useMemo for sorting (Points, Kills, WWCD) and case-insensitive search queries, avoiding useEffect sync.
+- Applied React.memo on LeaderboardRow with stable teamId key binding.
+- Verified sorting and filtering logic via check-leaderboard-derived.mjs CLI test.
+
+Verification:
+- [x] CLI script passes all sorting and search filtering checks.
+- [x] ESLint passes without errors or warnings.
+- [x] Production build passes.
+
+Next:
+- Commit 34: Assemble UI with AirdropTimerCard, ClaimStation, and Main App (T18-T20).
