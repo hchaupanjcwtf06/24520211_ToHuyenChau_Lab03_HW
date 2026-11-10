@@ -41,7 +41,7 @@ Requirements:
 - [x] T13: Add mouse and pointer interactions.
 - [x] T14: Implement pressed-state management.
 - [x] T15: Apply React.memo to PianoKey.
-- [ ] T16: Verify render isolation using React Profiler.
+- [x] T16: Verify render isolation using React Profiler.
 
 ### Phase 4 - Polyphonic Audio Engine
 - [x] T17: Create and resume AudioContext.
@@ -197,3 +197,19 @@ Verification:
 
 Next:
 - Commit 23: Verify render isolation with React Profiler.
+
+### Commit 23 - Verify Render Isolation with React Profiler
+Status: Completed.
+
+Scope:
+- T16: Profile 88-key piano rendering using React DevTools Profiler.
+- Verified that pressing/releasing a single key re-renders only that specific PianoKey and its container.
+- Confirmed the remaining 87 PianoKey instances stay memoized ("Did not render").
+
+Verification:
+- [x] React DevTools Profiler inspected.
+- [x] "Highlight updates when components render" verified in browser.
+- [x] 87 sibling keys remain isolated without re-renders.
+
+Next:
+- Commit 24: Implement FIFO note event recording (T23, T24).
