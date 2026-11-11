@@ -1,4 +1,4 @@
-import { useReducer, useState, useEffect, useId, useMemo } from 'react';
+import { useReducer, useState, useEffect, useId, useMemo, useCallback } from 'react';
 import type { EffortSignal } from '../types/situationship';
 import { situationshipReducer } from '../reducers/situationshipReducer';
 import { useCancelableMessagePing } from '../hooks/useCancelableMessagePing';
@@ -71,7 +71,7 @@ export function SituationshipAnalyzer() {
     });
   };
 
-  const handleAddMyEffort = () => {
+  const handleAddMyEffort = useCallback(() => {
     setMyTries(prev => prev + 10);
     setGhostingCountdown(5);
     sendPing();
@@ -84,9 +84,9 @@ export function SituationshipAnalyzer() {
         timestamp: Date.now(),
       },
     ]);
-  };
+  }, [sendPing]);
 
-  const handleAddRivalEffort = () => {
+  const handleAddRivalEffort = useCallback(() => {
     setRivalTries(prev => prev + 1);
     cancelPing();
     situationshipAudio.playRedFlagAlert();
@@ -99,7 +99,36 @@ export function SituationshipAnalyzer() {
         timestamp: Date.now(),
       },
     ]);
-  };
+  }, [cancelPing]);
+
+  const handleUnbind = useCallback(() => {
+    cancelPing();
+    dispatchPhase({ type: 'TRIGGER_GHOSTED' });
+    situationshipAudio.playExitChime();
+  }, [cancelPing]);
+
+  // 4. WCAG 2.2 AA Keyboard Navigation Engine (e.code + Anti-repeat guard)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.repeat) return; // Chặn spam phím liên tục của OS
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) {
+        return; // Không chặn khi người dùng nhập dữ liệu form
+      }
+
+      if (e.code === 'KeyE') {
+        handleAddMyEffort();
+      } else if (e.code === 'KeyA') {
+        handleAddRivalEffort();
+      } else if (e.code === 'Escape' && phase !== 'GHOSTED_EXIT') {
+        handleUnbind();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleAddMyEffort, handleAddRivalEffort, handleUnbind, phase]);
 
   const handleRollbackLastAction = () => {
     if (signals.length <= 1) return;
@@ -112,12 +141,6 @@ export function SituationshipAnalyzer() {
     }
 
     setSignals(prev => prev.slice(0, -1));
-  };
-
-  const handleUnbind = () => {
-    cancelPing();
-    dispatchPhase({ type: 'TRIGGER_GHOSTED' });
-    situationshipAudio.playExitChime();
   };
 
   const handleReset = () => {
@@ -314,6 +337,10 @@ export function SituationshipAnalyzer() {
               </ul>
             </section>
           </div>
+
+          <p className={styles.keyboardHelp}>
+            Phím tắt trợ năng (A11y): <kbd>E</kbd> (+10 Em) &bull; <kbd>A</kbd> (+1 Ai Đó) &bull; <kbd>Esc</kbd> (Dừng Lại)
+          </p>
         </>
       ) : (
         <div className={styles.exitBox}>
@@ -332,3 +359,4 @@ export function SituationshipAnalyzer() {
     </article>
   );
 }
+
