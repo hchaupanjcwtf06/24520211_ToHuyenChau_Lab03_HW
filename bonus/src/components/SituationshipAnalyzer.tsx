@@ -2,6 +2,7 @@ import { useReducer, useState, useEffect, useId, useMemo } from 'react';
 import type { EffortSignal } from '../types/situationship';
 import { situationshipReducer } from '../reducers/situationshipReducer';
 import { useCancelableMessagePing } from '../hooks/useCancelableMessagePing';
+import { situationshipAudio } from '../audio/situationshipAudio';
 import styles from './SituationshipAnalyzer.module.css';
 
 const INITIAL_SIGNALS: readonly EffortSignal[] = [
@@ -19,6 +20,7 @@ export function SituationshipAnalyzer() {
   const [rivalTries, setRivalTries] = useState<number>(1);
   const [signals, setSignals] = useState<readonly EffortSignal[]>(INITIAL_SIGNALS);
   const [ghostingCountdown, setGhostingCountdown] = useState<number>(5);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
 
   // Hook mô phỏng tin nhắn có khả năng Abort (Slide 33)
   const { status: pingStatus, sendPing, cancelPing } = useCancelableMessagePing();
@@ -39,6 +41,7 @@ export function SituationshipAnalyzer() {
         if (prev <= 1) {
           window.clearInterval(intervalId);
           dispatchPhase({ type: 'TRIGGER_GHOSTED' });
+          situationshipAudio.playExitChime();
           return 0;
         }
         return prev - 1;
@@ -50,10 +53,18 @@ export function SituationshipAnalyzer() {
     };
   }, [phase, myTries]);
 
+  const handleToggleAudio = () => {
+    setIsMuted(prev => {
+      const next = !prev;
+      situationshipAudio.setMuted(next);
+      return next;
+    });
+  };
+
   const handleAddMyEffort = () => {
     setMyTries(prev => prev + 10);
     setGhostingCountdown(5);
-    sendPing(); // Bắt đầu gửi ping tin nhắn mới
+    sendPing();
     setSignals(prev => [
       ...prev,
       {
@@ -67,7 +78,8 @@ export function SituationshipAnalyzer() {
 
   const handleAddRivalEffort = () => {
     setRivalTries(prev => prev + 1);
-    cancelPing(); // Hủy request đang chờ khi Ai Đó xuất hiện (Slide 33)
+    cancelPing();
+    situationshipAudio.playRedFlagAlert();
     setSignals(prev => [
       ...prev,
       {
@@ -82,6 +94,7 @@ export function SituationshipAnalyzer() {
   const handleUnbind = () => {
     cancelPing();
     dispatchPhase({ type: 'TRIGGER_GHOSTED' });
+    situationshipAudio.playExitChime();
   };
 
   const handleReset = () => {
@@ -95,7 +108,17 @@ export function SituationshipAnalyzer() {
   return (
     <article className={styles.analyzerCard} aria-labelledby="fsm-analyzer-title">
       <header className={styles.header}>
-        <span className={styles.tagline}>V-POP FINITE STATE MACHINE (WENDY THẢO)</span>
+        <div className={styles.headerTop}>
+          <span className={styles.tagline}>V-POP FINITE STATE MACHINE (WENDY THẢO)</span>
+          <button
+            type="button"
+            onClick={handleToggleAudio}
+            className={styles.audioToggleButton}
+            aria-label={isMuted ? 'Bật âm thanh hiệu ứng' : 'Tắt âm thanh hiệu ứng'}
+          >
+            {isMuted ? '🔇 Bật Âm Thanh' : '🔊 Tắt Âm Thanh'}
+          </button>
+        </div>
         <h2 id="fsm-analyzer-title" className={styles.title}>
           &apos;Hẹn Hò Nhưng Không Yêu&apos; Situationship Analyzer
         </h2>
