@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { usePubgAirdropTimer } from './hooks/usePubgAirdropTimer';
+import { KillFeedTicker } from './components/KillFeedTicker';
 import { useOptimisticClaim } from './hooks/useOptimisticClaim';
 import { AirdropTimerCard } from './components/AirdropTimerCard';
 import { ClaimStation } from './components/ClaimStation';
@@ -41,7 +42,7 @@ export default function App() {
 
       <main className="pubg-main-content">
         <AirdropTimerCard timer={airdropTimer} />
-
+        <KillFeedTicker />
         <ClaimStation
           items={claimEngine.items}
           claimingId={claimEngine.claimingId}
