@@ -1,6 +1,7 @@
 import { useReducer, useState, useEffect, useId, useMemo } from 'react';
 import type { EffortSignal } from '../types/situationship';
 import { situationshipReducer } from '../reducers/situationshipReducer';
+import { useCancelableMessagePing } from '../hooks/useCancelableMessagePing';
 import styles from './SituationshipAnalyzer.module.css';
 
 const INITIAL_SIGNALS: readonly EffortSignal[] = [
@@ -18,6 +19,9 @@ export function SituationshipAnalyzer() {
   const [rivalTries, setRivalTries] = useState<number>(1);
   const [signals, setSignals] = useState<readonly EffortSignal[]>(INITIAL_SIGNALS);
   const [ghostingCountdown, setGhostingCountdown] = useState<number>(5);
+
+  // Hook mô phỏng tin nhắn có khả năng Abort (Slide 33)
+  const { status: pingStatus, sendPing, cancelPing } = useCancelableMessagePing();
 
   // 2. Pure Derived State: Asymmetric Effort & Red-Flag (Slide 33)
   const myImpact = useMemo(() => Math.round(myTries * 0.1 * 10) / 10, [myTries]);
@@ -49,6 +53,7 @@ export function SituationshipAnalyzer() {
   const handleAddMyEffort = () => {
     setMyTries(prev => prev + 10);
     setGhostingCountdown(5);
+    sendPing(); // Bắt đầu gửi ping tin nhắn mới
     setSignals(prev => [
       ...prev,
       {
@@ -62,6 +67,7 @@ export function SituationshipAnalyzer() {
 
   const handleAddRivalEffort = () => {
     setRivalTries(prev => prev + 1);
+    cancelPing(); // Hủy request đang chờ khi Ai Đó xuất hiện (Slide 33)
     setSignals(prev => [
       ...prev,
       {
@@ -73,7 +79,13 @@ export function SituationshipAnalyzer() {
     ]);
   };
 
+  const handleUnbind = () => {
+    cancelPing();
+    dispatchPhase({ type: 'TRIGGER_GHOSTED' });
+  };
+
   const handleReset = () => {
+    cancelPing();
     dispatchPhase({ type: 'RESET_TO_DATING' });
     setMyTries(100);
     setRivalTries(1);
@@ -106,6 +118,17 @@ export function SituationshipAnalyzer() {
           ? 'Đã tự giải thoát: Mối quan hệ mập mờ đã được Unbind & Thu gom rác (GC)!'
           : 'Trạng thái quan hệ đang ở mức ổn định.'}
       </output>
+
+      {/* Huy hiệu tình trạng tín hiệu tin nhắn (AbortController - Slide 33) */}
+      <div className={styles.pingStatusBadge} role="status">
+        Tình trạng tin nhắn:{' '}
+        <strong>
+          {pingStatus === 'IDLE' && 'Chưa gửi'}
+          {pingStatus === 'SENDING' && 'Đang gửi (Chờ xem có rep không)...'}
+          {pingStatus === 'SEEN_NO_REP' && 'Đã Xem (Seen) Nhưng Không Rep!'}
+          {pingStatus === 'ABORTED' && 'Đã Hủy Request (AbortController)'}
+        </strong>
+      </div>
 
       {phase !== 'GHOSTED_EXIT' ? (
         <div className={styles.bodyGrid}>
@@ -170,7 +193,7 @@ export function SituationshipAnalyzer() {
               </button>
               <button
                 type="button"
-                onClick={() => dispatchPhase({ type: 'TRIGGER_GHOSTED' })}
+                onClick={handleUnbind}
                 className={styles.btnDanger}
               >
                 Unbind & Free Memory (Dừng Lại)
