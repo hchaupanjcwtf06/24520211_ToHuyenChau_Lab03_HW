@@ -41,12 +41,20 @@
 - [x] T25: Run lint and production build with zero warnings.
 - [x] T26: Final Git log inspection and submission verification.
 
+### Phase 8 - Advanced Telemetry & Live Defense Optimizations
+- [x] T27: Implement KillFeedTicker with auto-polling radar, pause toggle, and accessible live stream (Slide 27 Challenge B).
+- [x] T28: Implement Squad Bookmarking (Watchlist) and toggle filter using pure derived state in Leaderboard (Slide 27 Challenge A).
+
 ---
 
 ## Progress Log
 
 ### Commit 29 - HW3 Setup, TypeScript Contracts & Initial Mock Data
-Status: Pending.
+Status: Completed.
+
+Scope:
+- Initialized Vite React-TS project for homework 3.
+- Created TASK_DECOMPOSITION.md with comprehensive 7-phase WBS breakdown.
 
 ### Commit 30 - Define PUBG Domain Contracts & Deterministic Mock Data
 Status: Completed.
@@ -153,3 +161,31 @@ Scope:
 - Verified 100/100 Lighthouse Accessibility score and clean zero-overflow layout at 375px.
 - Verified automated CLI test suites (timer drift, optimistic rollback, derived state).
 - Confirmed zero-warning ESLint and TypeScript production build.
+
+### Commit 37 - Implement Live PVS Kill-Feed Event Ticker with Pause Control
+Status: Completed.
+
+Scope:
+- Built KillFeedTicker component simulating real-time match events with weapon icons and headshot badges.
+- Implemented interval polling with deterministic cleanup and pause/resume radar controls (Slide 27 Challenge B).
+- Bound live updates to accessible W3C output role="log" aria-live="polite".
+- Created check-killfeed-ticker.mjs CLI test confirming leak-free interval management.
+
+Verification:
+- [x] CLI script passes polling and pause/resume assertions.
+- [x] ESLint passes with zero warnings.
+- [x] Production build passes.
+
+### Commit 38 - Add Squad Bookmarking with Pure Derived State and Quick-Filter Toggle
+Status: Completed.
+
+Scope:
+- Added squad pinning/bookmarking star toggles on individual leaderboard rows.
+- Implemented "Only Show Pinned Squads" checkbox filter derived strictly inside useMemo (Slide 27 Challenge A).
+- Preserved single-render efficiency and React.memo row isolation without adding any redundant useEffect.
+- Enhanced table responsiveness and high-contrast star icon styles.
+
+Verification:
+- [x] Pure derived filtering verified with zero useEffect synchronization.
+- [x] ESLint passes with zero warnings.
+- [x] Production build passes.
