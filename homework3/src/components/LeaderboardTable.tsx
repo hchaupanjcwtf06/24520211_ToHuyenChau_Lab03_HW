@@ -1,4 +1,4 @@
-import { useState, useMemo, useId } from 'react';
+import { useState, useMemo, useId, useCallback } from 'react';
 import type { PvsTeamStats, LeaderboardSortField, SortDirection } from '../types/pubg';
 import { LeaderboardRow } from './LeaderboardRow';
 import styles from './LeaderboardTable.module.css';
@@ -10,20 +10,37 @@ interface LeaderboardTableProps {
 export function LeaderboardTable({ teams }: LeaderboardTableProps) {
   const searchInputId = useId();
   const sortSelectId = useId();
+  const pinnedFilterId = useId();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [sortField, setSortField] = useState<LeaderboardSortField>('totalPoints');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [pinnedSquadIds, setPinnedSquadIds] = useState<ReadonlySet<string>>(new Set(['te']));
+  const [showPinnedOnly, setShowPinnedOnly] = useState(false);
 
-  // Pure Derived State: Lọc theo tìm kiếm và sắp xếp hoàn toàn trong useMemo
+  const togglePin = useCallback((teamId: string) => {
+    setPinnedSquadIds(prev => {
+      const next = new Set(prev);
+      if (next.has(teamId)) {
+        next.delete(teamId);
+      } else {
+        next.add(teamId);
+      }
+      return next;
+    });
+  }, []);
+
+  // Pure Derived State: Lọc và sắp xếp hoàn toàn trong render pass, zero useEffect
   const processedTeams = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
 
-    const filtered = teams.filter(
-      team =>
+    const filtered = teams.filter(team => {
+      const matchesSearch =
         team.teamName.toLowerCase().includes(normalizedQuery) ||
-        team.tag.toLowerCase().includes(normalizedQuery)
-    );
+        team.tag.toLowerCase().includes(normalizedQuery);
+      const matchesPinned = showPinnedOnly ? pinnedSquadIds.has(team.teamId) : true;
+      return matchesSearch && matchesPinned;
+    });
 
     return [...filtered].sort((a, b) => {
       let comparison = 0;
@@ -39,7 +56,7 @@ export function LeaderboardTable({ teams }: LeaderboardTableProps) {
 
       return sortDirection === 'desc' ? -comparison : comparison;
     });
-  }, [teams, searchQuery, sortField, sortDirection]);
+  }, [teams, searchQuery, sortField, sortDirection, pinnedSquadIds, showPinnedOnly]);
 
   const toggleSortDirection = () => {
     setSortDirection(prev => (prev === 'desc' ? 'asc' : 'desc'));
@@ -54,7 +71,6 @@ export function LeaderboardTable({ teams }: LeaderboardTableProps) {
         <span className={styles.metaBadge}>Vòng Chung Kết Trực Tiếp</span>
       </div>
 
-      {/* Thanh công cụ tìm kiếm và lọc: Chuẩn Accessible Form Controls */}
       <fieldset className={styles.toolbar}>
         <legend className={styles.srOnly}>Bộ lọc bảng xếp hạng</legend>
 
@@ -97,9 +113,21 @@ export function LeaderboardTable({ teams }: LeaderboardTableProps) {
             {sortDirection === 'desc' ? '↓ Giảm dần' : '↑ Tăng dần'}
           </button>
         </div>
+
+        <div className={styles.checkboxGroup}>
+          <input
+            id={pinnedFilterId}
+            type="checkbox"
+            checked={showPinnedOnly}
+            onChange={e => setShowPinnedOnly(e.target.checked)}
+            className={styles.checkbox}
+          />
+          <label htmlFor={pinnedFilterId} className={styles.checkboxLabel}>
+            ⭐ Chỉ hiện đội đã ghim ({pinnedSquadIds.size})
+          </label>
+        </div>
       </fieldset>
 
-      {/* Bảng dữ liệu chuẩn W3C Table */}
       <div className={styles.tableResponsive}>
         <table className={styles.table}>
           <caption className={styles.srOnly}>
@@ -107,6 +135,7 @@ export function LeaderboardTable({ teams }: LeaderboardTableProps) {
           </caption>
           <thead>
             <tr>
+              <th scope="col" className={styles.thPin} aria-label="Ghim">★</th>
               <th scope="col" className={styles.thRank}>Hạng</th>
               <th scope="col" className={styles.thTeam}>Đội Tuyển</th>
               <th scope="col" className={styles.thNum}>WWCD</th>
@@ -122,12 +151,14 @@ export function LeaderboardTable({ teams }: LeaderboardTableProps) {
                   key={team.teamId}
                   team={team}
                   isHighlighted={searchQuery.trim().length > 0}
+                  isPinned={pinnedSquadIds.has(team.teamId)}
+                  onTogglePin={togglePin}
                 />
               ))
             ) : (
               <tr>
-                <td colSpan={6} className={styles.emptyCell}>
-                  Không tìm thấy đội tuyển phù hợp với từ khóa &ldquo;{searchQuery}&rdquo;.
+                <td colSpan={7} className={styles.emptyCell}>
+                  Không tìm thấy đội tuyển phù hợp.
                 </td>
               </tr>
             )}
