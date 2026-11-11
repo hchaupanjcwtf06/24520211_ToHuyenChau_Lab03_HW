@@ -3,6 +3,7 @@ import type { EffortSignal } from '../types/situationship';
 import { situationshipReducer } from '../reducers/situationshipReducer';
 import { useCancelableMessagePing } from '../hooks/useCancelableMessagePing';
 import { situationshipAudio } from '../audio/situationshipAudio';
+import { AsymmetricRatioBar } from './AsymmetricRatioBar';
 import styles from './SituationshipAnalyzer.module.css';
 
 const INITIAL_SIGNALS: readonly EffortSignal[] = [
@@ -178,133 +179,142 @@ export function SituationshipAnalyzer() {
       </div>
 
       {phase !== 'GHOSTED_EXIT' ? (
-        <div className={styles.bodyGrid}>
-          <fieldset className={styles.controlsFieldset}>
-            <legend className={styles.srOnly}>Điều chỉnh chỉ số nỗ lực đôi bên</legend>
+        <>
+          {/* Biểu đồ đo tỷ lệ nỗ lực đôi bên */}
+          <AsymmetricRatioBar
+            myImpact={myImpact}
+            rivalImpact={rivalImpact}
+            isRedFlag={isRedFlag}
+          />
 
-            <div className={styles.controlRow}>
-              <label htmlFor={myTriesId} className={styles.controlLabel}>
-                Em cố gắng (Số lần): <strong>{myTries}</strong>
-              </label>
-              <input
-                id={myTriesId}
-                type="range"
-                min="0"
-                max="500"
-                step="10"
-                value={myTries}
-                onChange={e => {
-                  setMyTries(e.target.valueAsNumber || 0);
-                  setGhostingCountdown(5);
-                }}
-                className={styles.rangeInput}
-              />
-              <span className={styles.impactScore}>
-                Trọng số (0.1x): <strong>{myImpact} điểm</strong>
-              </span>
-            </div>
+          <div className={styles.bodyGrid}>
+            <fieldset className={styles.controlsFieldset}>
+              <legend className={styles.srOnly}>Điều chỉnh chỉ số nỗ lực đôi bên</legend>
 
-            <div className={styles.controlRow}>
-              <label htmlFor={rivalTriesId} className={styles.controlLabel}>
-                Ai đó nỗ lực (Số lần): <strong>{rivalTries}</strong>
-              </label>
-              <input
-                id={rivalTriesId}
-                type="range"
-                min="0"
-                max="10"
-                step="1"
-                value={rivalTries}
-                onChange={e => setRivalTries(e.target.valueAsNumber || 0)}
-                className={styles.rangeInput}
-              />
-              <span className={styles.impactScore}>
-                Trọng số (50.0x): <strong>{rivalImpact} điểm</strong>
-              </span>
-            </div>
+              <div className={styles.controlRow}>
+                <label htmlFor={myTriesId} className={styles.controlLabel}>
+                  Em cố gắng (Số lần): <strong>{myTries}</strong>
+                </label>
+                <input
+                  id={myTriesId}
+                  type="range"
+                  min="0"
+                  max="500"
+                  step="10"
+                  value={myTries}
+                  onChange={e => {
+                    setMyTries(e.target.valueAsNumber || 0);
+                    setGhostingCountdown(5);
+                  }}
+                  className={styles.rangeInput}
+                />
+                <span className={styles.impactScore}>
+                  Trọng số (0.1x): <strong>{myImpact} điểm</strong>
+                </span>
+              </div>
 
-            <div className={styles.buttonGroup}>
-              <button
-                type="button"
-                onClick={handleAddMyEffort}
-                className={styles.btnSecondary}
-              >
-                +10 Lần Cố Gắng (Em)
-              </button>
-              <button
-                type="button"
-                onClick={handleAddRivalEffort}
-                className={styles.btnSecondary}
-              >
-                +1 Lần Xuất Hiện (Ai Đó)
-              </button>
-              <button
-                type="button"
-                onClick={handleUnbind}
-                className={styles.btnDanger}
-              >
-                Unbind & Free Memory (Dừng Lại)
-              </button>
-            </div>
-          </fieldset>
+              <div className={styles.controlRow}>
+                <label htmlFor={rivalTriesId} className={styles.controlLabel}>
+                  Ai đó nỗ lực (Số lần): <strong>{rivalTries}</strong>
+                </label>
+                <input
+                  id={rivalTriesId}
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="1"
+                  value={rivalTries}
+                  onChange={e => setRivalTries(e.target.valueAsNumber || 0)}
+                  className={styles.rangeInput}
+                />
+                <span className={styles.impactScore}>
+                  Trọng số (50.0x): <strong>{rivalImpact} điểm</strong>
+                </span>
+              </div>
 
-          <section className={styles.logSection} aria-label="Nhật ký tương tác">
-            <header className={styles.logHeader}>
-              <h3 className={styles.logTitle}>Nhật Ký Tín Hiệu Nỗ Lực</h3>
-              <button
-                type="button"
-                onClick={handleRollbackLastAction}
-                className={styles.rollbackBtn}
-                disabled={signals.length <= 1}
-                aria-label="Hoàn tác lần tương tác gần nhất"
-              >
-                ↩ Hoàn Tác (Rollback)
-              </button>
-            </header>
-
-            <div className={styles.filterBar}>
-              <span className={styles.filterLabel}>Lọc theo:</span>
-              <div className={styles.filterButtons}>
+              <div className={styles.buttonGroup}>
                 <button
                   type="button"
-                  className={`${styles.filterBtn} ${signalFilter === 'ALL' ? styles.filterActive : ''}`}
-                  onClick={() => setSignalFilter('ALL')}
+                  onClick={handleAddMyEffort}
+                  className={styles.btnSecondary}
                 >
-                  Tất cả ({signals.length})
+                  +10 Lần Cố Gắng (Em)
                 </button>
                 <button
                   type="button"
-                  className={`${styles.filterBtn} ${signalFilter === 'EM' ? styles.filterActive : ''}`}
-                  onClick={() => setSignalFilter('EM')}
+                  onClick={handleAddRivalEffort}
+                  className={styles.btnSecondary}
                 >
-                  Em
+                  +1 Lần Xuất Hiện (Ai Đó)
                 </button>
                 <button
                   type="button"
-                  className={`${styles.filterBtn} ${signalFilter === 'AI_DO' ? styles.filterActive : ''}`}
-                  onClick={() => setSignalFilter('AI_DO')}
+                  onClick={handleUnbind}
+                  className={styles.btnDanger}
                 >
-                  Ai Đó
+                  Unbind & Free Memory (Dừng Lại)
                 </button>
               </div>
-            </div>
+            </fieldset>
 
-            <ul className={styles.logList}>
-              {filteredSignals.length > 0 ? (
-                filteredSignals.map(s => (
-                  <li key={s.id} className={styles.logItem}>
-                    <strong className={s.actor === 'EM' ? styles.actorEm : styles.actorRival}>
-                      [{s.actor === 'EM' ? 'EM' : 'AI ĐÓ'}]:
-                    </strong>{' '}
-                    {s.description}
-                  </li>
-                ))
-              ) : (
-                <li className={styles.emptyLog}>Không có tín hiệu nào phù hợp.</li>
-              )}
-            </ul>
-          </section>
-        </div>
+            <section className={styles.logSection} aria-label="Nhật ký tương tác">
+              <header className={styles.logHeader}>
+                <h3 className={styles.logTitle}>Nhật Ký Tín Hiệu Nỗ Lực</h3>
+                <button
+                  type="button"
+                  onClick={handleRollbackLastAction}
+                  className={styles.rollbackBtn}
+                  disabled={signals.length <= 1}
+                  aria-label="Hoàn tác lần tương tác gần nhất"
+                >
+                  ↩ Hoàn Tác (Rollback)
+                </button>
+              </header>
+
+              <div className={styles.filterBar}>
+                <span className={styles.filterLabel}>Lọc theo:</span>
+                <div className={styles.filterButtons}>
+                  <button
+                    type="button"
+                    className={`${styles.filterBtn} ${signalFilter === 'ALL' ? styles.filterActive : ''}`}
+                    onClick={() => setSignalFilter('ALL')}
+                  >
+                    Tất cả ({signals.length})
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.filterBtn} ${signalFilter === 'EM' ? styles.filterActive : ''}`}
+                    onClick={() => setSignalFilter('EM')}
+                  >
+                    Em
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.filterBtn} ${signalFilter === 'AI_DO' ? styles.filterActive : ''}`}
+                    onClick={() => setSignalFilter('AI_DO')}
+                  >
+                    Ai Đó
+                  </button>
+                </div>
+              </div>
+
+              <ul className={styles.logList}>
+                {filteredSignals.length > 0 ? (
+                  filteredSignals.map(s => (
+                    <li key={s.id} className={styles.logItem}>
+                      <strong className={s.actor === 'EM' ? styles.actorEm : styles.actorRival}>
+                        [{s.actor === 'EM' ? 'EM' : 'AI ĐÓ'}]:
+                      </strong>{' '}
+                      {s.description}
+                    </li>
+                  ))
+                ) : (
+                  <li className={styles.emptyLog}>Không có tín hiệu nào phù hợp.</li>
+                )}
+              </ul>
+            </section>
+          </div>
+        </>
       ) : (
         <div className={styles.exitBox}>
           <p className={styles.exitMessage}>
