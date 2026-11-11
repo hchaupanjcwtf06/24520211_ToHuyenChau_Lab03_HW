@@ -21,6 +21,7 @@ export function SituationshipAnalyzer() {
   const [signals, setSignals] = useState<readonly EffortSignal[]>(INITIAL_SIGNALS);
   const [ghostingCountdown, setGhostingCountdown] = useState<number>(5);
   const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [signalFilter, setSignalFilter] = useState<'ALL' | 'EM' | 'AI_DO'>('ALL');
 
   // Hook mô phỏng tin nhắn có khả năng Abort (Slide 33)
   const { status: pingStatus, sendPing, cancelPing } = useCancelableMessagePing();
@@ -29,6 +30,14 @@ export function SituationshipAnalyzer() {
   const myImpact = useMemo(() => Math.round(myTries * 0.1 * 10) / 10, [myTries]);
   const rivalImpact = useMemo(() => Math.round(rivalTries * 50.0 * 10) / 10, [rivalTries]);
   const isRedFlag = phase === 'DATING_NO_LOVE' && myImpact < rivalImpact;
+
+  // Pure Derived State: Lọc nhật ký tín hiệu trong render pass (Zero useEffect)
+  const filteredSignals = useMemo(() => {
+    if (signalFilter === 'ALL') {
+      return signals;
+    }
+    return signals.filter(s => s.actor === signalFilter);
+  }, [signals, signalFilter]);
 
   // 3. 'Seen Không Rep' Ghosting Countdown & Cleanup (Slide 34)
   useEffect(() => {
@@ -91,6 +100,19 @@ export function SituationshipAnalyzer() {
     ]);
   };
 
+  const handleRollbackLastAction = () => {
+    if (signals.length <= 1) return;
+    const lastSignal = signals[signals.length - 1];
+
+    if (lastSignal.actor === 'EM') {
+      setMyTries(prev => Math.max(0, prev - 10));
+    } else {
+      setRivalTries(prev => Math.max(0, prev - 1));
+    }
+
+    setSignals(prev => prev.slice(0, -1));
+  };
+
   const handleUnbind = () => {
     cancelPing();
     dispatchPhase({ type: 'TRIGGER_GHOSTED' });
@@ -103,6 +125,8 @@ export function SituationshipAnalyzer() {
     setMyTries(100);
     setRivalTries(1);
     setGhostingCountdown(5);
+    setSignals(INITIAL_SIGNALS);
+    setSignalFilter('ALL');
   };
 
   return (
@@ -225,16 +249,59 @@ export function SituationshipAnalyzer() {
           </fieldset>
 
           <section className={styles.logSection} aria-label="Nhật ký tương tác">
-            <h3 className={styles.logTitle}>Nhật Ký Tín Hiệu Nỗ Lực</h3>
+            <header className={styles.logHeader}>
+              <h3 className={styles.logTitle}>Nhật Ký Tín Hiệu Nỗ Lực</h3>
+              <button
+                type="button"
+                onClick={handleRollbackLastAction}
+                className={styles.rollbackBtn}
+                disabled={signals.length <= 1}
+                aria-label="Hoàn tác lần tương tác gần nhất"
+              >
+                ↩ Hoàn Tác (Rollback)
+              </button>
+            </header>
+
+            <div className={styles.filterBar}>
+              <span className={styles.filterLabel}>Lọc theo:</span>
+              <div className={styles.filterButtons}>
+                <button
+                  type="button"
+                  className={`${styles.filterBtn} ${signalFilter === 'ALL' ? styles.filterActive : ''}`}
+                  onClick={() => setSignalFilter('ALL')}
+                >
+                  Tất cả ({signals.length})
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.filterBtn} ${signalFilter === 'EM' ? styles.filterActive : ''}`}
+                  onClick={() => setSignalFilter('EM')}
+                >
+                  Em
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.filterBtn} ${signalFilter === 'AI_DO' ? styles.filterActive : ''}`}
+                  onClick={() => setSignalFilter('AI_DO')}
+                >
+                  Ai Đó
+                </button>
+              </div>
+            </div>
+
             <ul className={styles.logList}>
-              {signals.map(s => (
-                <li key={s.id} className={styles.logItem}>
-                  <strong className={s.actor === 'EM' ? styles.actorEm : styles.actorRival}>
-                    [{s.actor === 'EM' ? 'EM' : 'AI ĐÓ'}]:
-                  </strong>{' '}
-                  {s.description}
-                </li>
-              ))}
+              {filteredSignals.length > 0 ? (
+                filteredSignals.map(s => (
+                  <li key={s.id} className={styles.logItem}>
+                    <strong className={s.actor === 'EM' ? styles.actorEm : styles.actorRival}>
+                      [{s.actor === 'EM' ? 'EM' : 'AI ĐÓ'}]:
+                    </strong>{' '}
+                    {s.description}
+                  </li>
+                ))
+              ) : (
+                <li className={styles.emptyLog}>Không có tín hiệu nào phù hợp.</li>
+              )}
             </ul>
           </section>
         </div>
