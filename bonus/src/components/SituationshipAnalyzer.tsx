@@ -1,5 +1,6 @@
-import { useState, useEffect, useId, useMemo } from 'react';
-import type { RelationshipPhase, EffortSignal } from '../types/situationship';
+import { useReducer, useState, useEffect, useId, useMemo } from 'react';
+import type { EffortSignal } from '../types/situationship';
+import { situationshipReducer } from '../reducers/situationshipReducer';
 import styles from './SituationshipAnalyzer.module.css';
 
 const INITIAL_SIGNALS: readonly EffortSignal[] = [
@@ -11,8 +12,8 @@ export function SituationshipAnalyzer() {
   const myTriesId = useId();
   const rivalTriesId = useId();
 
-  // 1. Core State Machine (Slide 33)
-  const [phase, setPhase] = useState<RelationshipPhase>('DATING_NO_LOVE');
+  // 1. Core State Machine với useReducer & Transition Guard (Slide 33)
+  const [phase, dispatchPhase] = useReducer(situationshipReducer, 'DATING_NO_LOVE');
   const [myTries, setMyTries] = useState<number>(100);
   const [rivalTries, setRivalTries] = useState<number>(1);
   const [signals, setSignals] = useState<readonly EffortSignal[]>(INITIAL_SIGNALS);
@@ -29,12 +30,11 @@ export function SituationshipAnalyzer() {
       return undefined;
     }
 
-    // Interval đếm lùi an toàn, không gọi setState đồng bộ trực tiếp ở thân effect
     const intervalId = window.setInterval(() => {
       setGhostingCountdown(prev => {
         if (prev <= 1) {
           window.clearInterval(intervalId);
-          setPhase('GHOSTED_EXIT');
+          dispatchPhase({ type: 'TRIGGER_GHOSTED' });
           return 0;
         }
         return prev - 1;
@@ -48,7 +48,7 @@ export function SituationshipAnalyzer() {
 
   const handleAddMyEffort = () => {
     setMyTries(prev => prev + 10);
-    setGhostingCountdown(5); // Reset thời gian chờ ngay trong event handler
+    setGhostingCountdown(5);
     setSignals(prev => [
       ...prev,
       {
@@ -74,7 +74,7 @@ export function SituationshipAnalyzer() {
   };
 
   const handleReset = () => {
-    setPhase('DATING_NO_LOVE');
+    dispatchPhase({ type: 'RESET_TO_DATING' });
     setMyTries(100);
     setRivalTries(1);
     setGhostingCountdown(5);
@@ -170,7 +170,7 @@ export function SituationshipAnalyzer() {
               </button>
               <button
                 type="button"
-                onClick={() => setPhase('GHOSTED_EXIT')}
+                onClick={() => dispatchPhase({ type: 'TRIGGER_GHOSTED' })}
                 className={styles.btnDanger}
               >
                 Unbind & Free Memory (Dừng Lại)
